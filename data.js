@@ -40,5 +40,6 @@ const RESTAURANTS = [
    Upload the image into the photos folder first. Keep each photo under about 300 KB.
    Restaurants without a photo show a neutral placeholder. */
 const PHOTOS = {
-  "Brado Kitchen": "photos/brado-kitchen.jpg"
+   "Nam Kopi": "photos/nam-kopi.jpg",
+   "Brado Kitchen": "photos/brado-kitchen.jpg"
 };
