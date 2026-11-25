@@ -23,7 +23,7 @@ const RESTAURANTS = [
   {name:"Brado Kitchen", type:"Western & Local", priceMin:1, priceMax:20, open:12, close:23, area:"Muar", phone:"017-449 5139", address:"Brado Kitchen, 2, Jln Jaya 1/5B, 84600 Muar, Johor", tags:[], closed:[5],
    menu:[["Western dishes",null],["Local dishes",null]]},
   {name:"Kedai Makan Haji Masjuki", type:"Malay", priceMin:1, priceMax:20, open:7, close:18, area:"Near campus", phone:"010-5120647", address:"No. 1, Sime Darby Property Sales Gallery, Cafe Unit, KM25, Jalan Pagoh, 84600 Pagoh, Johor", tags:["affordable","near"],
-   menu:[["Mee Bandung Udang Galah"],null]]},
+   menu:[["Mee Bandung Udang Galah",null]]},
   {name:"Roti Canai Pak Din (sample)", type:"Roti & Mamak", priceMin:2, priceMax:8, open:6, close:24, area:"Pagoh", phone:"013-222 3344", address:"Jalan Utama, Pagoh", tags:["affordable","near"],
    menu:[["Roti canai",1.5],["Roti telur",2.5],["Maggi goreng",6]]},
   {name:"Kedai Sup Tulang Hijau (sample)", type:"Soup & Rice", priceMin:8, priceMax:14, open:17, close:26, area:"Pagoh", phone:"011-555 6677", address:"Taman Pagoh, Pagoh", tags:["hidden"],
