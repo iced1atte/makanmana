@@ -7,7 +7,7 @@
 const CONFIG = {
   teamContact: "makanmana.team@gmail.com",  // team email. Recommend/Owner forms are sent here
   recommendFormUrl: "https://forms.gle/jeVGtQZrxFQJFEk36",  // optional: Google Form link for student recommendations
-  ownerFormUrl: ""       // optional: Google Form link for restaurant owners
+  ownerFormUrl: "https://forms.gle/vroQYPEzAjX5QQjW9"       // optional: Google Form link for restaurant owners
 };
 
 /* One restaurant per block. Copy a block, paste it below another, then edit.
