@@ -41,6 +41,6 @@ const RESTAURANTS = [
    Restaurants without a photo show a neutral placeholder. */
 const PHOTOS = {
    "Nam Kopi": "photos/nam-kopi.jpg",
-   "Brado Kitchen": "photos/brado-kitchen.jpg"
+   "Brado Kitchen": "photos/brado-kitchen.jpg",
    "Nasi Campur Cik Ina Kelate (stall Mok)": "photos/nasi-campur-cik-ina.jpg"
 };
