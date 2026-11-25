@@ -52,5 +52,7 @@ const RESTAURANTS = [
 const PHOTOS = {
    "Nam Kopi": "photos/nam-kopi.jpg",
    "Brado Kitchen": "photos/brado-kitchen.jpg",
-   "Nasi Campur Cik Ina Kelate (stall Mok)": "photos/nasi-campur-cik-ina.jpg"
+   "Nasi Campur Cik Ina Kelate (stall Mok)": "photos/nasi-campur-cik-ina.jpg",
+   "Ayam Gepuk Tokmat: "photos/gepuk-tokmat.jpeg",
+
 };
