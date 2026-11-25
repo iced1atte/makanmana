@@ -38,10 +38,12 @@ const RESTAURANTS = [
    menu:[["Mee bandung",null],["Satay",null]]},
   {name:"ThaiRich", type:"Thai", priceMin:20, priceMax:40, open:12, close:21.5, area:"Muar", phone:"010-779 6286", address:"B03 & B04, ThaiRich, The Wood, 37-3, Lorong Haji Ibrahim, Taman Orkid, 84000 Muar, Johor Darul Ta'zim", mapUrl:"https://share.google/ebofPv0UC7Nu8aL8K", tags:[], closed:[3],
    menu:[["Tomyam",null],["Bingsu",null],["Pad kra pao",null]]},
-  {name:"Ayam Gepuk Ganas", type:"Indonesian", priceMin:1, priceMax:20, open:10.5, close:22, area:"Pagoh", phone:"013-3480142", address:"No 7, Jalan Sarjana 8, Presint Sarjana, Bandar University Pagoh, 84600 Muar, Johor Darul Ta'zim", mapUrl:"https://share.google/cksh6MeFajlxBQw5j", tags:[],
+  {name:"Ayam Gepuk Ganas", type:"Indonesian", priceMin:1, priceMax:20, open:10.5, close:22, area:"Pagoh", phone:"013-3480142", address:"No 7, Jalan Sarjana 8, Presint Sarjana, Bandar University Pagoh, 84600 Muar, Johor Darul Ta'zim", mapUrl:"https://share.google/cksh6MeFajlxBQw5j", tags:["near"],
    menu:[["Indonesian cuisine",null]]},
-  {name:"Ayam Gepuk Tokmat", type:"Indonesian", priceMin:1, priceMax:20, open:11, close:21.5, area:"Pagoh", phone:"014-7244153", address:"No. 14, Jalan Sarjana 9 Presint Sarjana, Bandar Universiti Pagoh Pagoh, 84600 Muar, 84600 Pagoh, Johor Darul Ta'zim", mapUrl:"https://share.google/ouW8Tfl0JCvO5hBG1", tags:[],
+  {name:"Ayam Gepuk Tokmat", type:"Indonesian", priceMin:1, priceMax:20, open:11, close:21.5, area:"Pagoh", phone:"014-7244153", address:"No. 14, Jalan Sarjana 9 Presint Sarjana, Bandar Universiti Pagoh Pagoh, 84600 Muar, 84600 Pagoh, Johor Darul Ta'zim", mapUrl:"https://share.google/ouW8Tfl0JCvO5hBG1", tags:["near"],
    menu:[["Indonesian cuisine",null]]},
+   {name:"Angin Malam", type:"Western & Local", priceMin:5, priceMax:30, open:16.5, close:23.5, area:"Pekan Pagoh", phone:"017-6734123", address:"TL13/14 Lot 3963, Penginapan WNT, Jalan Sekolah Paya Redan, Pagoh", tags:[], closed:[3],
+   menu:[["",null]]}
 ];
 
 /* Photos (optional): "Exact restaurant name": "photos/file-name.jpg"
