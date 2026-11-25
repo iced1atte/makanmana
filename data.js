@@ -58,6 +58,6 @@ const PHOTOS = {
    "Ayam Gepuk Tokmat": "photos/gepuk-tokmat.jpeg",
    "ThaiRich": "photos/thai-rich.jpeg",
    "PappaRice by THEsalts": "photos/pappa-rice.jpeg",
-   "Hayven by KelabKopi": "photos/hayven-kelabkopi.jpeg",
+   "Hayven by KelabKopi": "photos/hayven-kelabkopi.jpeg"
 
 };
