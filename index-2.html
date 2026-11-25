@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Makan Mana? – Pagoh student food guide</title>
+<link rel="icon" href="images/logo.png">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#fbf5e9;--card:#f4ead7;--field:#fffdf8;--text:#3a2a20;--muted:#7a6656;--brand:#b9532d;--brand-d:#9d4322;--onbrand:#fff;--line:#e2d3b6;--thumb:#eadcc2;--foot:#3a2a20;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#231a14;--card:#2f241c;--field:#2a2019;--text:#f6ead6;--muted:#c9b69c;--brand:#d8744a;--brand-d:#e58a60;--onbrand:#231a14;--line:#46372b;--thumb:#3a2d23;--foot:#18110d;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#231a14;--card:#2f241c;--field:#2a2019;--text:#f6ead6;--muted:#c9b69c;--brand:#d8744a;--brand-d:#e58a60;--onbrand:#231a14;--line:#46372b;--thumb:#3a2d23;--foot:#18110d;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.55}
+h1,h2,h3,.brand{font-family:Georgia,"Times New Roman",serif;font-weight:700;line-height:1.25;margin:0}
+h1{font-size:2rem}h2{font-size:1.4rem}h3{font-size:1.1rem}
+p{margin:0 0 12px}
+a{color:inherit}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+/* header */
+header{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:64px;flex-wrap:wrap;padding-top:6px;padding-bottom:6px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-size:1.35rem;color:var(--brand)}
+.brand img{height:40px;width:auto}
+nav{display:flex;gap:4px;flex-wrap:wrap}
+nav a{text-decoration:none;padding:8px 12px;font-size:.95rem;font-weight:600;color:var(--muted);border-bottom:2px solid transparent}
+nav a:hover{color:var(--text)}
+nav a.on{color:var(--brand);border-bottom-color:var(--brand)}
+main{padding-top:32px;padding-bottom:56px}
+.eyebrow{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--muted);margin:0 0 8px}
+.sm{font-size:.88rem;color:var(--muted)}
+section{margin-top:48px}
+.sechead{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:16px}
+.sechead a{font-size:.92rem;font-weight:600;color:var(--brand)}
+/* hero */
+.hero{position:relative;border-radius:16px;overflow:hidden;background:#3a2a20 url(images/hero.jpg) center/cover;color:#fbf0dc;padding:64px 40px}
+.hero::before{content:"";position:absolute;inset:0;background:rgba(36,26,20,.74)}
+.hero>*{position:relative;max-width:600px}
+.hero .eyebrow{color:#e8c9a4}
+.hero h1{font-size:2.5rem;margin-bottom:12px}
+.hero p{font-size:1.05rem;margin-bottom:24px;opacity:.95}
+.search{display:flex;gap:8px}
+.search input{flex:1;min-width:0;padding:16px 18px;border-radius:10px;border:0;font:inherit;font-size:1.05rem;background:#fffdf8;color:#3a2a20}
+.search input:focus{outline:3px solid #e8c9a4}
+.hero .sm{margin:10px 0 0;color:#e8d6bb}
+/* controls */
+input,select,textarea,button{font:inherit}
+.btn{display:inline-block;background:var(--brand);color:var(--onbrand);border:0;border-radius:10px;padding:12px 22px;font-weight:700;cursor:pointer;text-decoration:none;text-align:center;transition:background .15s}
+.btn:hover{background:var(--brand-d)}
+.btn.line{background:transparent;color:var(--brand);border:1.5px solid var(--brand)}
+.btn.line:hover{background:var(--card)}
+.btn:disabled{opacity:.6;cursor:default}
+.field{width:100%;padding:11px 13px;border-radius:10px;border:1.5px solid var(--line);background:var(--field);color:var(--text);min-width:0}
+.field:focus{outline:2px solid var(--brand);outline-offset:1px;border-color:var(--brand)}
+textarea.field{resize:vertical;min-height:110px}
+label{display:flex;flex-direction:column;gap:6px;font-size:.85rem;font-weight:700}
+/* categories */
+.cats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.cat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;text-align:left;color:var(--text);cursor:pointer;transition:border-color .15s}
+.cat:hover{border-color:var(--brand)}
+.cat b{display:block;font-size:1rem;margin-bottom:2px}
+.cat span{font-size:.85rem;color:var(--muted)}
+/* cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;transition:border-color .15s}
+.card:hover{border-color:var(--brand)}
+.thumb{position:relative;aspect-ratio:4/3;background:var(--thumb);overflow:hidden}
+.thumb img.ph{position:absolute;top:50%;left:50%;width:36%;transform:translate(-50%,-50%);opacity:.4}
+.thumb img.pic{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.card .body{padding:16px;display:flex;flex-direction:column;gap:6px;flex:1}
+.card .meta{font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--muted)}
+.card .price{font-weight:700}
+.card .tags{margin:4px 0 12px;display:flex;gap:6px;flex-wrap:wrap}
+.card .btn{margin-top:auto;padding:10px 16px}
+.tag{display:inline-block;font-size:.74rem;font-weight:700;padding:3px 10px;border-radius:99px;background:var(--thumb);color:var(--text)}
+.tag.open{background:var(--brand);color:var(--onbrand)}
+.tag.closed{background:transparent;border:1px solid var(--line);color:var(--muted)}
+/* panels */
+.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px}
+.panel h3{margin-bottom:10px}
+.fbar{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;align-items:end;margin:20px 0 12px}
+.chk{flex-direction:row;align-items:center;gap:8px;padding:11px 13px;border:1.5px solid var(--line);border-radius:10px;background:var(--field);font-weight:600}
+.count{font-size:.9rem;color:var(--muted);margin:0 0 16px}
+.count button{background:none;border:0;color:var(--brand);font-weight:700;cursor:pointer;padding:0 0 0 6px}
+.empty{grid-column:1/-1;text-align:center;color:var(--muted);padding:40px 0}
+.cta{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px 28px}
+.cta p{margin:2px 0 0;color:var(--muted)}
+/* detail */
+.back{display:inline-block;font-size:.92rem;font-weight:600;color:var(--brand);text-decoration:none;margin-bottom:16px}
+.cover{position:relative;aspect-ratio:16/7;border-radius:14px;overflow:hidden;background:var(--thumb);margin:16px 0}
+.cover img.ph{position:absolute;top:50%;left:50%;height:46%;transform:translate(-50%,-50%);opacity:.4}
+.cover img.pic{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin:20px 0}
+.rows div{display:flex;justify-content:space-between;gap:16px;padding:8px 0;border-bottom:1px solid var(--line)}
+.rows div:last-child{border-bottom:0}
+.tip{border-left:4px solid var(--brand);background:var(--card);border-radius:0 10px 10px 0;padding:14px 18px}
+/* wheel */
+.wheelpage{max-width:560px;margin:0 auto;text-align:center}
+.wheelpage .sel{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:16px 0}
+.pill{border:1.5px solid var(--line);background:var(--field);color:var(--text);border-radius:99px;padding:6px 14px;font-size:.88rem;font-weight:600;cursor:pointer}
+.pill.on{background:var(--brand);border-color:var(--brand);color:var(--onbrand)}
+.wf{display:grid;grid-template-columns:1fr 1fr;gap:12px;text-align:left}
+.wheelbox{position:relative;width:min(340px,86vw);margin:28px auto 20px}
+.wheelbox canvas{width:100%;height:auto;display:block;transition:transform 4s cubic-bezier(.12,.7,.1,1)}
+.pointer{position:absolute;top:-10px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:15px solid transparent;border-right:15px solid transparent;border-top:30px solid #2b1d15;filter:drop-shadow(0 0 1.5px #fff) drop-shadow(0 0 1.5px #fff);z-index:2}
+.result{min-height:3.5rem;font-family:Georgia,serif;font-size:1.4rem;font-weight:700}
+.result .btn{display:block;width:max-content;margin:10px auto 0;font-family:system-ui,sans-serif;font-size:.92rem;padding:9px 18px}
+/* forms */
+.formpage{max-width:620px}
+.form{display:grid;gap:16px;margin-top:20px}
+.form .row{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.note{font-size:.88rem;color:var(--muted)}
+.ok{display:none;margin-top:16px}
+/* footer */
+footer{background:var(--foot);color:#f1e3c8;padding:28px 0;font-size:.9rem}
+footer .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
+footer p{margin:4px 0 0;max-width:340px;color:#d8c7a8}
+footer .brand{color:#f1e3c8;font-size:1.1rem}
+@media(max-width:640px){.hero{padding:36px 20px}.hero h1{font-size:1.8rem}.search{flex-direction:column}h1{font-size:1.6rem}.wf{grid-template-columns:1fr}nav{width:100%;overflow-x:auto;flex-wrap:nowrap}nav a{white-space:nowrap}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <a href="#home" class="brand"><img src="images/logo.png" alt="">Makan Mana?</a>
+  <nav id="nav">
+    <a href="#home" data-v="home">Home</a><a href="#restaurants" data-v="restaurants">Restaurants</a><a href="#wheel" data-v="wheel">Spin the Wheel</a><a href="#recommend" data-v="recommend">Recommend</a><a href="#owners" data-v="owners">For Owners</a><a href="#about" data-v="about">About</a>
+  </nav>
+</div></header>
+<main class="wrap" id="app"></main>
+<footer><div class="wrap">
+  <div><span class="brand">Makan Mana?</span><p>A student-friendly guide to eateries around Pagoh and Muar.</p></div>
+  <div><b>Made for Pagoh students</b><p>Questions or updates? Use the Recommend page, or email <span id="contact"></span>.</p></div>
+</div></footer>
+
+<script src="data.js"></script>
+<script>
+const $=s=>document.querySelector(s),app=$("#app");
+const state={q:"",cat:"all",type:"all",price:"all",area:"all",pick:false};
+$("#contact").textContent=CONFIG.teamContact;
+const TAGN={affordable:"Affordable",hidden:"Hidden gem",near:"Near campus"};
+const CATN={affordable:"Affordable meals",hidden:"Hidden gems",near:"Near campus",open:"Open now"};
+const DAYS=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+const closedTxt=r=>r.closed?" · closed "+r.closed.map(d=>DAYS[d]).join(", "):"";
+const isOpen=r=>{const n=new Date();if(r.closed&&r.closed.includes(n.getDay()))return false;const h=n.getHours()+n.getMinutes()/60;return (h>=r.open&&h<r.close)||(h+24>=r.open&&h+24<r.close)};
+const fmtH=h=>{h=h%24;return (h%12||12)+(h>=12?"pm":"am")};
+const money=n=>"RM"+(Number.isInteger(n)?n:n.toFixed(2));
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const photo=r=>(typeof PHOTOS!=="undefined"&&PHOTOS[r.name])||"";
+const thumb=(r,cls)=>photo(r)?`<img class="pic" src="${esc(photo(r))}" alt="${esc(r.name)}" loading="lazy">`:`<img class="ph" src="images/logo.png" alt="">`;
+
+function filtered(){
+  return RESTAURANTS.filter(r=>{
+    const q=state.q.trim().toLowerCase();
+    if(q&&!(r.name+" "+r.type+" "+r.area+" "+r.menu.map(m=>m[0]).join(" ")).toLowerCase().includes(q))return false;
+    if(state.cat==="open"&&!isOpen(r))return false;
+    if(TAGN[state.cat]&&!r.tags.includes(state.cat))return false;
+    if(state.type!=="all"&&r.type!==state.type)return false;
+    if(state.area!=="all"&&r.area!==state.area)return false;
+    if(state.price!=="all"&&r.priceMin>+state.price)return false;
+    if(state.pick&&!(r.tags.includes("affordable")||r.tags.includes("near")))return false;
+    return true;
+  });
+}
+function cardHTML(r){
+  const i=RESTAURANTS.indexOf(r);
+  return `<article class="card"><div class="thumb">${thumb(r)}</div><div class="body">
+  <div class="meta">${esc(r.type)} · ${esc(r.area)}</div><h3>${esc(r.name)}</h3>
+  <div class="price">${money(r.priceMin)} – ${money(r.priceMax)}</div>
+  <div class="sm">${fmtH(r.open)} – ${fmtH(r.close)}${closedTxt(r)}</div>
+  <div class="tags"><span class="tag ${isOpen(r)?"open":"closed"}">${isOpen(r)?"Open now":"Closed"}</span>${r.tags.map(t=>`<span class="tag">${TAGN[t]}</span>`).join("")}</div>
+  <a class="btn" href="#restaurant-${i}">View details</a></div></article>`;
+}
+
+function home(){
+  const cats=[["affordable","Affordable meals","Easy on the student budget"],["all","Food types","Browse every cuisine"],["hidden","Hidden gems","Lesser-known local spots"],["near","Near campus","Close to where you study"],["open","Open now","Serving right this minute"]];
+  app.innerHTML=`<div class="hero"><p class="eyebrow">The Pagoh student food guide</p>
+  <h1>Confused where to eat? Makan Mana?</h1>
+  <p>Menus, prices, opening hours and map links for eateries around Pagoh and Muar, all in one place.</p>
+  <form class="search" id="sf"><input type="search" id="hq" placeholder="Search for a dish or restaurant" aria-label="Search"><button class="btn" type="submit">Search</button></form>
+  <p class="sm">For example: nasi lemak, roti canai, kopi</p></div>
+  <section><div class="sechead"><h2>Browse by category</h2></div><div class="cats">${cats.map(c=>`<button class="cat" data-cat="${c[0]}"><b>${c[1]}</b><span>${c[2]}</span></button>`).join("")}</div></section>
+  <section><div class="sechead"><h2>Featured restaurants</h2><a href="#restaurants">View all</a></div><div class="grid">${RESTAURANTS.slice(0,3).map(cardHTML).join("")}</div></section>
+  <section><div class="cta"><div><h2>Can’t decide?</h2><p>Let the wheel pick where you eat today.</p></div><a class="btn" href="#wheel">Spin the Wheel</a></div></section>`;
+  $("#sf").onsubmit=e=>{e.preventDefault();state.q=$("#hq").value;state.cat="all";location.hash="restaurants"};
+  document.querySelectorAll("[data-cat]").forEach(b=>b.onclick=()=>{state.q="";state.cat=b.dataset.cat;location.hash="restaurants"});
+}
+
+function restaurants(){
+  const opt=(arr,v)=>arr.map(t=>`<option ${v===t?"selected":""}>${esc(t)}</option>`).join("");
+  const types=[...new Set(RESTAURANTS.map(r=>r.type))],areas=[...new Set(RESTAURANTS.map(r=>r.area))];
+  app.innerHTML=`<p class="eyebrow">The food lineup</p><h1>Find your next makan spot</h1>
+  <p class="sm" style="margin-top:6px">Please check current hours, prices and location before heading out.</p>
+  <div class="panel fbar" style="padding:16px">
+   <label>Search<input class="field" type="search" id="q" placeholder="Name or dish" value="${esc(state.q)}"></label>
+   <label>Price<select class="field" id="price"><option value="all">Any price</option>${[5,10,15].map(p=>`<option value="${p}" ${state.price==p?"selected":""}>From under RM${p+1}</option>`).join("")}</select></label>
+   <label>Food type<select class="field" id="type"><option value="all">All types</option>${opt(types,state.type)}</select></label>
+   <label>Location<select class="field" id="area"><option value="all">All locations</option>${opt(areas,state.area)}</select></label>
+   <label class="chk"><input type="checkbox" id="pick" ${state.pick?"checked":""}> Student picks</label></div>
+  <p class="count" id="count"></p><div class="grid" id="grid"></div>`;
+  const draw=()=>{const l=filtered();
+    $("#count").innerHTML=l.length+(l.length===1?" spot":" spots")+" found"+(CATN[state.cat]?` · ${CATN[state.cat]}<button id="clr">Clear</button>`:"");
+    $("#grid").innerHTML=l.length?l.map(cardHTML).join(""):'<div class="empty">No eateries match your filters. Try changing them.</div>';
+    const c=$("#clr");if(c)c.onclick=()=>{state.cat="all";draw()}};
+  draw();
+  $("#q").oninput=e=>{state.q=e.target.value;draw()};
+  $("#price").onchange=e=>{state.price=e.target.value;draw()};
+  $("#type").onchange=e=>{state.type=e.target.value;draw()};
+  $("#area").onchange=e=>{state.area=e.target.value;draw()};
+  $("#pick").onchange=e=>{state.pick=e.target.checked;draw()};
+}
+
+function detail(i){
+  const r=RESTAURANTS[i];if(!r){location.hash="restaurants";return}
+  const map="https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(r.name.replace(" (sample)","")+" "+r.address);
+  app.innerHTML=`<a class="back" href="#restaurants">← Back to restaurants</a>
+  <p class="eyebrow">${esc(r.type)} · ${esc(r.area)}</p><h1>${esc(r.name)}</h1>
+  <p class="sm" style="margin-top:6px">${money(r.priceMin)} – ${money(r.priceMax)}</p>
+  <div class="cover">${thumb(r)}</div>
+  <div class="two"><div class="panel"><h3>What to order</h3><div class="rows">${r.menu.map(m=>`<div><span>${esc(m[0])}</span><b>${m[1]==null?"":money(m[1])}</b></div>`).join("")}</div></div>
+  <div class="panel"><h3>Plan your visit</h3><div class="rows">
+   <div><span>Hours</span><b style="text-align:right">${fmtH(r.open)} – ${fmtH(r.close)}${closedTxt(r)}</b></div>
+   <div><span>Status</span><span class="tag ${isOpen(r)?"open":"closed"}">${isOpen(r)?"Open now":"Closed"}</span></div>
+   <div><span>Phone</span><b>${r.phone?`<a href="tel:${esc(r.phone.replace(/\s/g,""))}">${esc(r.phone)}</a>`:"Not yet added"}</b></div>
+   <div><span>Area</span><b>${esc(r.area)}</b></div>
+   <div><span>Address</span><b style="text-align:right">${esc(r.address)}</b></div></div>
+   <p style="margin:16px 0 0"><a class="btn" target="_blank" rel="noopener" href="${map}">Open in Google Maps</a></p></div></div>
+  <div class="tip"><b>Student tip</b><br>${esc(r.tip||"Check the current menu and location before travelling.")}</div>
+  ${r.name.includes("(sample)")?'<p class="sm" style="margin-top:16px">This is a sample entry, not a verified business. Please confirm prices, hours and location before visiting.</p>':""}`;
+}
+
+/* ---------- Spin the wheel ---------- */
+let spins=0,pool=[],wf={price:"all",tag:"all"};
+const WC=[["#b9532d","#ffffff"],["#3a2a20","#f6ead6"],["#e2c9a0","#3a2a20"],["#7a4a35","#ffffff"],["#d98e66","#3a2a20"],["#5b3f30","#f6ead6"]];
+function wheel(){
+  app.innerHTML=`<div class="wheelpage"><h1>Spin the Wheel</h1><p class="sm" style="margin-top:6px">Choose the places you like, then spin to decide where to eat.</p>
+  <div class="wf" style="margin-top:20px"><label>Price<select class="field" id="wp"><option value="all">Any price</option><option value="6">From under RM7</option><option value="10">From under RM11</option></select></label>
+  <label>Filter<select class="field" id="wt"><option value="all">All places</option><option value="near">Near campus</option><option value="affordable">Affordable</option><option value="hidden">Hidden gems</option></select></label></div>
+  <div class="sel" id="picks"></div>
+  <div class="wheelbox"><div class="pointer"></div><canvas id="cv" width="640" height="640"></canvas></div>
+  <button class="btn" id="spin">Spin</button><div class="result" id="res" style="margin-top:20px"></div></div>`;
+  const sel=new Set(RESTAURANTS.map((_,i)=>i));
+  const compute=()=>{pool=RESTAURANTS.map((r,i)=>({r,i})).filter(({r,i})=>sel.has(i)&&(wf.price==="all"||r.priceMin<=+wf.price)&&(wf.tag==="all"||r.tags.includes(wf.tag)))};
+  const picks=()=>{$("#picks").innerHTML=RESTAURANTS.map((r,i)=>`<button class="pill ${sel.has(i)?"on":""}" data-p="${i}">${esc(r.name.replace(" (sample)",""))}</button>`).join("");
+    document.querySelectorAll("[data-p]").forEach(b=>b.onclick=()=>{const i=+b.dataset.p;sel.has(i)?sel.delete(i):sel.add(i);refresh()})};
+  const refresh=()=>{compute();picks();drawWheel();$("#res").textContent=""};
+  $("#wp").onchange=e=>{wf.price=e.target.value;refresh()};
+  $("#wt").onchange=e=>{wf.tag=e.target.value;refresh()};
+  $("#spin").onclick=()=>{
+    if(pool.length<2){$("#res").textContent="Choose at least 2 places";return}
+    const n=pool.length,a=360/n,w=Math.floor(Math.random()*n);spins++;
+    const jitter=(Math.random()-.5)*a*.7,R=spins*1800+360-(w*a+a/2)+jitter;
+    $("#cv").style.transform=`rotate(${R}deg)`;$("#spin").disabled=true;$("#res").textContent="";
+    setTimeout(()=>{$("#spin").disabled=false;const r=pool[w].r;$("#res").innerHTML=`${esc(r.name.replace(" (sample)",""))}<a class="btn" href="#restaurant-${pool[w].i}">View details</a>`},4100);
+  };
+  refresh();
+}
+function drawWheel(){
+  const cv=$("#cv");if(!cv)return;cv.style.transition="none";cv.style.transform="rotate(0deg)";void cv.offsetWidth;cv.style.transition="";spins=0;
+  const c=cv.getContext("2d"),S=640,n=pool.length;c.clearRect(0,0,S,S);
+  if(n<1){c.fillStyle="#8a7766";c.font="28px system-ui";c.textAlign="center";c.fillText("No places selected",S/2,S/2);return}
+  const a=2*Math.PI/n;
+  pool.forEach((p,i)=>{let k=i%WC.length;if(i===n-1&&n>1&&k===0)k=2;
+    c.beginPath();c.moveTo(S/2,S/2);c.arc(S/2,S/2,S/2-6,-Math.PI/2+i*a,-Math.PI/2+(i+1)*a);c.closePath();
+    c.fillStyle=WC[k][0];c.fill();c.strokeStyle="#fbf5e9";c.lineWidth=4;c.stroke();
+    let t=p.r.name.replace(" (sample)","");if(t.length>18)t=t.slice(0,17)+"…";
+    c.save();c.translate(S/2,S/2);c.rotate(-Math.PI/2+i*a+a/2);c.fillStyle=WC[k][1];c.font="bold 24px system-ui,sans-serif";c.textAlign="right";c.fillText(t,S/2-30,8);c.restore()});
+  c.beginPath();c.arc(S/2,S/2,26,0,2*Math.PI);c.fillStyle="#2b1d15";c.fill();c.lineWidth=5;c.strokeStyle="#fbf5e9";c.stroke();
+}
+
+/* ---------- Forms ---------- */
+const FORMS={
+  recommend:{title:"Recommend an eatery",intro:"Know a good place, or spotted a wrong price or opening time? Tell us so other students can benefit.",url:()=>CONFIG.recommendFormUrl,subject:"Makan Mana? recommendation",
+    fields:[["Eatery name","name",1],["Location or area","area",1],["Food type","type"],["Price range (RM)","price"],["Why do you recommend it?","why","","area"],["Your name (optional)","from"]]},
+  owners:{title:"For restaurant owners",intro:"Want students to find your latest menu, prices and opening hours? Send us your details. It is free.",url:()=>CONFIG.ownerFormUrl,subject:"Makan Mana? owner submission",
+    fields:[["Restaurant name","name",1],["Address","area",1],["Phone number","phone"],["Opening hours","hours"],["Price range (RM)","price"],["Menu and prices","menu","","area"],["Your name","from",1]]}
+};
+function formPage(k){
+  const f=FORMS[k];
+  app.innerHTML=`<div class="formpage"><h1>${f.title}</h1><p class="sm" style="margin-top:6px">${f.intro}</p>
+  <form class="form" id="ff">${f.fields.map(x=>x[3]?`<label>${x[0]}<textarea class="field" name="${x[1]}" ${x[2]?"required":""}></textarea></label>`:`<label>${x[0]}<input class="field" name="${x[1]}" ${x[2]?"required":""}></label>`).join("")}
+  <div><button class="btn" type="submit">Send to the team</button></div></form>
+  <div class="tip ok" id="ok">Your email app should open with the details filled in. Please press send to submit.</div>
+  <p class="note" style="margin-top:16px">Photos can be attached in the same email. All submissions are reviewed by the project team before being published.${f.url()?` You can also <a href="${esc(f.url())}" target="_blank" rel="noopener">use our Google Form</a>.`:""}</p></div>`;
+  $("#ff").onsubmit=e=>{e.preventDefault();
+    const d=new FormData(e.target),body=f.fields.map(x=>x[0]+": "+(d.get(x[1])||"-")).join("\n");
+    $("#ok").style.display="block";
+    location.href="mailto:"+encodeURIComponent(CONFIG.teamContact).replace("%40","@")+"?subject="+encodeURIComponent(f.subject)+"&body="+encodeURIComponent(body);};
+}
+function about(){
+  app.innerHTML=`<div class="formpage"><h1>About Makan Mana?</h1>
+  <p style="margin-top:12px">New to Pagoh? Food information is scattered across maps, social media and chat groups, which makes it hard to compare places and decide. Makan Mana? brings menus, prices, opening hours and map links together in one simple website, with no sign-up needed.</p>
+  <div class="two" style="margin-top:24px"><div class="panel"><h3>How it works</h3><p class="sm">Browse or search for eateries, filter by price and food type, and open a restaurant to see its menu and location. If you cannot decide, spin the wheel.</p></div>
+  <div class="panel"><h3>Who keeps it updated</h3><p class="sm">Students recommend places and send updates, restaurant owners share current menus and prices, and the project team reviews every submission.</p></div></div>
+  <p class="sm">Project team: add your names here.</p></div>`;
+}
+const pages={home,restaurants,wheel,recommend:()=>formPage("recommend"),owners:()=>formPage("owners"),about};
+function route(){
+  const v=(location.hash||"#home").slice(1),m=v.match(/^restaurant-(\d+)$/);
+  const k=m?"restaurants":(pages[v]?v:"home");
+  document.querySelectorAll("#nav a").forEach(a=>a.classList.toggle("on",a.dataset.v===k));
+  m?detail(+m[1]):pages[k]();window.scrollTo(0,0);
+}
+window.addEventListener("hashchange",route);route();
+</script>
+</body>
+</html>
