@@ -83,6 +83,11 @@ label{display:flex;flex-direction:column;gap:6px;font-size:.85rem;font-weight:70
 .chk{flex-direction:row;align-items:center;gap:8px;padding:11px 13px;border:1.5px solid var(--line);border-radius:10px;background:var(--field);font-weight:600}
 .count{font-size:.9rem;color:var(--muted);margin:0 0 16px}
 .count button{background:none;border:0;color:var(--brand);font-weight:700;cursor:pointer;padding:0 0 0 6px}
+.pager{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin-top:32px}
+.pager button{min-width:40px;height:40px;padding:0 12px;border:1.5px solid var(--line);border-radius:10px;background:var(--field);color:var(--text);font-weight:600;cursor:pointer}
+.pager button:hover:not(:disabled){border-color:var(--brand)}
+.pager button.on{background:var(--brand);border-color:var(--brand);color:var(--onbrand)}
+.pager button:disabled{opacity:.45;cursor:default}
 .empty{grid-column:1/-1;text-align:center;color:var(--muted);padding:40px 0}
 .cta{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px 28px}
 .cta p{margin:2px 0 0;color:var(--muted)}
@@ -112,6 +117,7 @@ label{display:flex;flex-direction:column;gap:6px;font-size:.85rem;font-weight:70
 .form .row{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
 .note{font-size:.88rem;color:var(--muted)}
 .ok{display:none;margin-top:16px}
+details.alt{margin-top:20px}details.alt summary{cursor:pointer;color:var(--brand);font-weight:600;font-size:.92rem}details.alt .form{margin-top:16px}
 /* footer */
 footer{background:var(--foot);color:#f1e3c8;padding:28px 0;font-size:.9rem}
 footer .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
@@ -137,7 +143,10 @@ footer .brand{color:#f1e3c8;font-size:1.1rem}
 <script src="data.js"></script>
 <script>
 const $=s=>document.querySelector(s),app=$("#app");
-const state={q:"",cat:"all",type:"all",price:"all",area:"all",pick:false};
+const state={q:"",cat:"all",type:"all",price:"all",area:"all",pick:false,page:1};
+const PER=9;
+RESTAURANTS.sort((a,b)=>a.name.localeCompare(b.name,"en",{sensitivity:"base"}));
+const slug=r=>r.name.replace(/\s*\(sample\)/i,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
 $("#contact").textContent=CONFIG.teamContact;
 const TAGN={affordable:"Affordable",hidden:"Hidden gem",near:"Near campus"};
 const CATN={affordable:"Affordable meals",hidden:"Hidden gems",near:"Near campus",open:"Open now"};
@@ -164,13 +173,12 @@ function filtered(){
   });
 }
 function cardHTML(r){
-  const i=RESTAURANTS.indexOf(r);
   return `<article class="card"><div class="thumb">${thumb(r)}</div><div class="body">
   <div class="meta">${esc(r.type)} · ${esc(r.area)}</div><h3>${esc(r.name)}</h3>
   <div class="price">${money(r.priceMin)} – ${money(r.priceMax)}</div>
   <div class="sm">${fmtH(r.open)} – ${fmtH(r.close)}${closedTxt(r)}</div>
   <div class="tags"><span class="tag ${isOpen(r)?"open":"closed"}">${isOpen(r)?"Open now":"Closed"}</span>${r.tags.map(t=>`<span class="tag">${TAGN[t]}</span>`).join("")}</div>
-  <a class="btn" href="#restaurant-${i}">View details</a></div></article>`;
+  <a class="btn" href="#restaurant-${slug(r)}">View details</a></div></article>`;
 }
 
 function home(){
@@ -181,10 +189,10 @@ function home(){
   <form class="search" id="sf"><input type="search" id="hq" placeholder="Search for a dish or restaurant" aria-label="Search"><button class="btn" type="submit">Search</button></form>
   <p class="sm">For example: nasi lemak, roti canai, kopi</p></div>
   <section><div class="sechead"><h2>Browse by category</h2></div><div class="cats">${cats.map(c=>`<button class="cat" data-cat="${c[0]}"><b>${c[1]}</b><span>${c[2]}</span></button>`).join("")}</div></section>
-  <section><div class="sechead"><h2>Featured restaurants</h2><a href="#restaurants">View all</a></div><div class="grid">${RESTAURANTS.slice(0,3).map(cardHTML).join("")}</div></section>
+  <section><div class="sechead"><h2>Featured restaurants</h2><a href="#restaurants">View all</a></div><div class="grid">${[...RESTAURANTS.filter(photo),...RESTAURANTS.filter(x=>!photo(x))].slice(0,3).map(cardHTML).join("")}</div></section>
   <section><div class="cta"><div><h2>Can’t decide?</h2><p>Let the wheel pick where you eat today.</p></div><a class="btn" href="#wheel">Spin the Wheel</a></div></section>`;
-  $("#sf").onsubmit=e=>{e.preventDefault();state.q=$("#hq").value;state.cat="all";location.hash="restaurants"};
-  document.querySelectorAll("[data-cat]").forEach(b=>b.onclick=()=>{state.q="";state.cat=b.dataset.cat;location.hash="restaurants"});
+  $("#sf").onsubmit=e=>{e.preventDefault();state.q=$("#hq").value;state.cat="all";state.page=1;location.hash="restaurants"};
+  document.querySelectorAll("[data-cat]").forEach(b=>b.onclick=()=>{state.q="";state.cat=b.dataset.cat;state.page=1;location.hash="restaurants"});
 }
 
 function restaurants(){
@@ -198,22 +206,25 @@ function restaurants(){
    <label>Food type<select class="field" id="type"><option value="all">All types</option>${opt(types,state.type)}</select></label>
    <label>Location<select class="field" id="area"><option value="all">All locations</option>${opt(areas,state.area)}</select></label>
    <label class="chk"><input type="checkbox" id="pick" ${state.pick?"checked":""}> Student picks</label></div>
-  <p class="count" id="count"></p><div class="grid" id="grid"></div>`;
-  const draw=()=>{const l=filtered();
-    $("#count").innerHTML=l.length+(l.length===1?" spot":" spots")+" found"+(CATN[state.cat]?` · ${CATN[state.cat]}<button id="clr">Clear</button>`:"");
-    $("#grid").innerHTML=l.length?l.map(cardHTML).join(""):'<div class="empty">No eateries match your filters. Try changing them.</div>';
-    const c=$("#clr");if(c)c.onclick=()=>{state.cat="all";draw()}};
+  <p class="count" id="count"></p><div class="grid" id="grid"></div><div class="pager" id="pager"></div>`;
+  const draw=()=>{const l=filtered(),pages=Math.max(1,Math.ceil(l.length/PER));if(state.page>pages)state.page=pages;
+    const a=(state.page-1)*PER,part=l.slice(a,a+PER);
+    $("#count").innerHTML=(l.length?`Showing ${a+1}–${a+part.length} of ${l.length} spot${l.length===1?"":"s"}`:"0 spots found")+(CATN[state.cat]?` · ${CATN[state.cat]}<button id="clr">Clear</button>`:"");
+    $("#grid").innerHTML=l.length?part.map(cardHTML).join(""):'<div class="empty">No eateries match your filters. Try changing them.</div>';
+    $("#pager").innerHTML=pages>1?`<button data-pg="${state.page-1}" ${state.page===1?"disabled":""}>Previous</button>`+Array.from({length:pages},(_,k)=>`<button data-pg="${k+1}" class="${state.page===k+1?"on":""}">${k+1}</button>`).join("")+`<button data-pg="${state.page+1}" ${state.page===pages?"disabled":""}>Next</button>`:"";
+    document.querySelectorAll("[data-pg]").forEach(b=>b.onclick=()=>{state.page=+b.dataset.pg;draw();$("#count").scrollIntoView({behavior:"smooth",block:"start"})});
+    const c=$("#clr");if(c)c.onclick=()=>{state.cat="all";state.page=1;draw()}};
   draw();
-  $("#q").oninput=e=>{state.q=e.target.value;draw()};
-  $("#price").onchange=e=>{state.price=e.target.value;draw()};
-  $("#type").onchange=e=>{state.type=e.target.value;draw()};
-  $("#area").onchange=e=>{state.area=e.target.value;draw()};
-  $("#pick").onchange=e=>{state.pick=e.target.checked;draw()};
+  $("#q").oninput=e=>{state.q=e.target.value;state.page=1;draw()};
+  $("#price").onchange=e=>{state.price=e.target.value;state.page=1;draw()};
+  $("#type").onchange=e=>{state.type=e.target.value;state.page=1;draw()};
+  $("#area").onchange=e=>{state.area=e.target.value;state.page=1;draw()};
+  $("#pick").onchange=e=>{state.pick=e.target.checked;state.page=1;draw()};
 }
 
-function detail(i){
-  const r=RESTAURANTS[i];if(!r){location.hash="restaurants";return}
-  const map=r.mapURL || "https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(r.name.replace(" (sample)","")+" "+r.address);
+function detail(sl){
+  const r=RESTAURANTS.find(x=>slug(x)===sl);if(!r){location.hash="restaurants";return}
+  const map="https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(r.name.replace(" (sample)","")+" "+r.address);
   app.innerHTML=`<a class="back" href="#restaurants">← Back to restaurants</a>
   <p class="eyebrow">${esc(r.type)} · ${esc(r.area)}</p><h1>${esc(r.name)}</h1>
   <p class="sm" style="margin-top:6px">${money(r.priceMin)} – ${money(r.priceMax)}</p>
@@ -252,7 +263,7 @@ function wheel(){
     const n=pool.length,a=360/n,w=Math.floor(Math.random()*n);spins++;
     const jitter=(Math.random()-.5)*a*.7,R=spins*1800+360-(w*a+a/2)+jitter;
     $("#cv").style.transform=`rotate(${R}deg)`;$("#spin").disabled=true;$("#res").textContent="";
-    setTimeout(()=>{$("#spin").disabled=false;const r=pool[w].r;$("#res").innerHTML=`${esc(r.name.replace(" (sample)",""))}<a class="btn" href="#restaurant-${pool[w].i}">View details</a>`},4100);
+    setTimeout(()=>{$("#spin").disabled=false;const r=pool[w].r;$("#res").innerHTML=`${esc(r.name.replace(" (sample)",""))}<a class="btn" href="#restaurant-${slug(r)}">View details</a>`},4100);
   };
   refresh();
 }
@@ -271,18 +282,20 @@ function drawWheel(){
 
 /* ---------- Forms ---------- */
 const FORMS={
-  recommend:{title:"Recommend an eatery",intro:"Know a good place, or spotted a wrong price or opening time? Tell us so other students can benefit.",url:()=>CONFIG.recommendFormUrl,subject:"Makan Mana? recommendation",
+  recommend:{title:"Recommend an eatery",intro:"Know a good place, or spotted a wrong price or opening time? Tell us so other students can benefit.",url:()=>CONFIG.recommendFormUrl,subject:"Makan Mana? recommendation",btn:"Open the recommendation form",
     fields:[["Eatery name","name",1],["Location or area","area",1],["Food type","type"],["Price range (RM)","price"],["Why do you recommend it?","why","","area"],["Your name (optional)","from"]]},
-  owners:{title:"For restaurant owners",intro:"Want students to find your latest menu, prices and opening hours? Send us your details. It is free.",url:()=>CONFIG.ownerFormUrl,subject:"Makan Mana? owner submission",
+  owners:{title:"For restaurant owners",intro:"Want students to find your latest menu, prices and opening hours? Send us your details. It is free.",url:()=>CONFIG.ownerFormUrl,subject:"Makan Mana? owner submission",btn:"Open the owner form",
     fields:[["Restaurant name","name",1],["Address","area",1],["Phone number","phone"],["Opening hours","hours"],["Price range (RM)","price"],["Menu and prices","menu","","area"],["Your name","from",1]]}
 };
 function formPage(k){
-  const f=FORMS[k];
+  const f=FORMS[k],u=f.url();
+  const formHTML=`<form class="form" id="ff">${f.fields.map(x=>x[3]?`<label>${x[0]}<textarea class="field" name="${x[1]}" ${x[2]?"required":""}></textarea></label>`:`<label>${x[0]}<input class="field" name="${x[1]}" ${x[2]?"required":""}></label>`).join("")}
+  <div><button class="btn ${u?"line":""}" type="submit">Send by email</button></div></form>
+  <div class="tip ok" id="ok">Your email app should open with the details filled in. Please press send to submit.</div>`;
   app.innerHTML=`<div class="formpage"><h1>${f.title}</h1><p class="sm" style="margin-top:6px">${f.intro}</p>
-  <form class="form" id="ff">${f.fields.map(x=>x[3]?`<label>${x[0]}<textarea class="field" name="${x[1]}" ${x[2]?"required":""}></textarea></label>`:`<label>${x[0]}<input class="field" name="${x[1]}" ${x[2]?"required":""}></label>`).join("")}
-  <div><button class="btn" type="submit">Send to the team</button></div></form>
-  <div class="tip ok" id="ok">Your email app should open with the details filled in. Please press send to submit.</div>
-  <p class="note" style="margin-top:16px">Photos can be attached in the same email. All submissions are reviewed by the project team before being published.${f.url()?` You can also <a href="${esc(f.url())}" target="_blank" rel="noopener">use our Google Form</a>.`:""}</p></div>`;
+  ${u?`<div class="panel" style="margin-top:20px"><h3>Fill in our online form</h3><p class="sm">It takes about a minute, and your answers go straight to the project team.</p><a class="btn" target="_blank" rel="noopener" href="${esc(u)}">${f.btn}</a></div>
+  <details class="alt"><summary>Prefer to send an email instead?</summary>${formHTML}</details>`:formHTML}
+  <p class="note" style="margin-top:16px">${u?"":"Photos can be attached in the same email. "}All submissions are reviewed by the project team before being published.</p></div>`;
   $("#ff").onsubmit=e=>{e.preventDefault();
     const d=new FormData(e.target),body=f.fields.map(x=>x[0]+": "+(d.get(x[1])||"-")).join("\n");
     $("#ok").style.display="block";
@@ -297,10 +310,10 @@ function about(){
 }
 const pages={home,restaurants,wheel,recommend:()=>formPage("recommend"),owners:()=>formPage("owners"),about};
 function route(){
-  const v=(location.hash||"#home").slice(1),m=v.match(/^restaurant-(\d+)$/);
+  const v=(location.hash||"#home").slice(1),m=v.match(/^restaurant-([a-z0-9-]+)$/);
   const k=m?"restaurants":(pages[v]?v:"home");
   document.querySelectorAll("#nav a").forEach(a=>a.classList.toggle("on",a.dataset.v===k));
-  m?detail(+m[1]):pages[k]();window.scrollTo(0,0);
+  m?detail(m[1]):pages[k]();window.scrollTo(0,0);
 }
 window.addEventListener("hashchange",route);route();
 </script>
