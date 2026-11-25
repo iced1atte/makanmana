@@ -18,9 +18,9 @@ const CONFIG = {
    tip: optional student tip | menu: list of ["Dish", price] (use null if price unknown)
    Entries marked (sample) are placeholders. Delete them when real data is ready. */
 const RESTAURANTS = [
-  {name:"Nam Kopi", type:"Cafe", priceMin:1, priceMax:20, open:8, close:17, area:"Pekan Muar", phone:"011-26668596", address:"44 (Tingkat), Nam Kopi, First Floor, Lot FF-03, Satu, Jalan Sisi, Pekan Muar, 84000 Muar, Johor", mapUrl:"https://share.google/ttbtTu89rfPEokZhv", tags:["affordable"],
+  {name:"Nam Kopi", type:"Cafe", priceMin:1, priceMax:20, open:8, close:17, area:"Muar", phone:"011-26668596", address:"44 (Tingkat), Nam Kopi, First Floor, Lot FF-03, Satu, Jalan Sisi, Pekan Muar, 84000 Muar, Johor", mapUrl:"https://share.google/ttbtTu89rfPEokZhv", tags:["affordable"],
    menu:[["Nasi lemak",null],["Nasi goreng",null],["Nasi chicken chop",null],["Roti bakar",null],["Ayam Korea",null],["Kopi",null],["Cendol",null]]},
-  {name:"Brado Kitchen", type:"Western & Local", priceMin:1, priceMax:20, open:12, close:23, area:"Muar", phone:"017-449 5139", address:"Brado Kitchen, 2, Jln Jaya 1/5B, 84600 Muar, Johor", tags:["affordable","near"], closed:[5],
+  {name:"Brado Kitchen", type:"Western & Local", priceMin:1, priceMax:20, open:12, close:23, area:"Pagoh", phone:"017-449 5139", address:"Brado Kitchen, 2, Jln Jaya 1/5B, 84600 Muar, Johor", tags:["affordable","near"], closed:[5],
    menu:[["Western dishes",null],["Local dishes",null]]},
   {name:"Kedai Makan Haji Masjuki", type:"Malay", priceMin:1, priceMax:20, open:7, close:18, area:"Near campus", phone:"010-5120647", address:"No. 1, Sime Darby Property Sales Gallery, Cafe Unit, KM25, Jalan Pagoh, 84600 Pagoh, Johor", mapUrl:"https://maps.app.goo.gl/12xwWhk3RA7xwBWr8", tags:["affordable","near"],
    menu:[["Mee Bandung Udang Galah",null]]},
@@ -34,7 +34,7 @@ const RESTAURANTS = [
    menu:[["Asam pedas pari",null],["Daging salai",null]]},
    {name:"PappaRice by THEsalts", type:"Western & Local", priceMin:1, priceMax:30, open:11, close:21, area:"Muar", phone:"011-5760 3558", address:"PappaRice by THEsalts, 23 GF JALAN MEGA, Jln Sakeh, PUSAT PERDAGANGAN MEGA, 84000 Muar, Johor Darul Ta'zim", mapUrl:"https://share.google/brndfqS6BNx6DyYT6", tags:[], closed:[1],
    menu:[["Western dishes",null],["Local dishes",null]]},
-  {name:"Mee Bandung Abu Bakar Hanipah", type:"Malay", priceMin:1, priceMax:20, open:7, close:16, area:"Pekan Muar", phone:"012-264 2720", address:"Mee Bandung Abu Bakar Hanipah, 69A, Jalan Abdullah, Pekan Muar, 84000 Muar, Johor", mapUrl:"https://share.google/v2NxVuM32ftSK4oDF", tags:[], closed:[5],
+  {name:"Mee Bandung Abu Bakar Hanipah", type:"Malay", priceMin:1, priceMax:20, open:7, close:16, area:"Muar", phone:"012-264 2720", address:"Mee Bandung Abu Bakar Hanipah, 69A, Jalan Abdullah, Pekan Muar, 84000 Muar, Johor", mapUrl:"https://share.google/v2NxVuM32ftSK4oDF", tags:[], closed:[5],
    menu:[["Mee bandung",null],["Satay",null]]},
   {name:"ThaiRich", type:"Thai", priceMin:20, priceMax:40, open:12, close:21.5, area:"Muar", phone:"010-779 6286", address:"B03 & B04, ThaiRich, The Wood, 37-3, Lorong Haji Ibrahim, Taman Orkid, 84000 Muar, Johor Darul Ta'zim", mapUrl:"https://share.google/ebofPv0UC7Nu8aL8K", tags:[], closed:[3],
    menu:[["Tomyam",null],["Bingsu",null],["Pad kra pao",null]]},
