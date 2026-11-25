@@ -32,12 +32,16 @@ const RESTAURANTS = [
    menu:[["Tomyam",null],["Thai cuisine",null]]},
   {name:"Asam Pedas Panchor", type:"Malay", priceMin:1, priceMax:20, open:10, close:17, area:"Panchor", phone:"012-714 1316", address:"LOT 49, Asam Pedas Panchor, 20, JALAN TAN CHOY, YAN, 84500 Panchor, Johor Darul Ta'zim", mapUrl:"https://share.google/7BXorLDrX210AlBIy", tags:[], closed:[5],
    menu:[["Asam pedas pari",null],["Daging salai",null]]},
-  {name:"Muar Mee Bandung Corner (sample)", type:"Noodles", priceMin:7, priceMax:12, open:10, close:21, area:"Muar", phone:"016-888 9900", address:"Bandar Maharani, Muar", tags:["hidden"],
-   menu:[["Mee bandung Muar",9],["Mee rebus",8],["Air bandung",3]]},
-  {name:"Gerai Western Abang Jo (sample)", type:"Western", priceMin:8, priceMax:16, open:16, close:23, area:"Near campus", phone:"017-111 2233", address:"Opposite campus, Pagoh", tags:["near","affordable"],
-   menu:[["Chicken chop",12],["Fish & chips",11],["Fries",5]]},
-  {name:"Cafe Kopi Lorong (sample)", type:"Cafe", priceMin:4, priceMax:15, open:9, close:22, area:"Muar", phone:"014-777 1212", address:"Jalan Abdullah, Muar", tags:["hidden"],
-   menu:[["Iced latte",9],["Kaya toast set",8],["Teh o ais",3]]}
+   {name:"PappaRice by THEsalts", type:"Western & Local", priceMin:1, priceMax:30, open:11, close:21, area:"Muar", phone:"011-5760 3558", address:"PappaRice by THEsalts, 23 GF JALAN MEGA, Jln Sakeh, PUSAT PERDAGANGAN MEGA, 84000 Muar, Johor Darul Ta'zim", mapUrl:"https://share.google/brndfqS6BNx6DyYT6", tags:[], closed:[1],
+   menu:[["Western dishes",null],["Local dishes",null]]},
+  {name:"Mee Bandung Abu Bakar Hanipah", type:"Malay", priceMin:1, priceMax:20, open:7, close:16, area:"Pekan Muar", phone:"012-264 2720", address:"Mee Bandung Abu Bakar Hanipah, 69A, Jalan Abdullah, Pekan Muar, 84000 Muar, Johor", mapUrl:"https://share.google/v2NxVuM32ftSK4oDF", tags:[], closed:[5],
+   menu:[["Mee bandung",null],["Satay",null]]},
+  {name:"ThaiRich", type:"Thai", priceMin:20, priceMax:40, open:12, close:21.5, area:"Muar", phone:"010-779 6286", address:"B03 & B04, ThaiRich, The Wood, 37-3, Lorong Haji Ibrahim, Taman Orkid, 84000 Muar, Johor Darul Ta'zim", mapUrl:"https://share.google/ebofPv0UC7Nu8aL8K", tags:[], closed:[3],
+   menu:[["Tomyam",null],["Bingsu",null],["Pad kra pao",null]]},
+  {name:"Ayam Gepuk Ganas", type:"Indonesian", priceMin:1, priceMax:20, open:10.5, close:22, area:"Pagoh", phone:"013-3480142", address:"No 7, Jalan Sarjana 8, Presint Sarjana, Bandar University Pagoh, 84600 Muar, Johor Darul Ta'zim", mapUrl:"https://share.google/cksh6MeFajlxBQw5j", tags:[],
+   menu:[["Indonesian cuisine",null]]},
+  {name:"Ayam Gepuk Tokmat", type:"Indonesian", priceMin:1, priceMax:20, open:11, close:21.5, area:"Pagoh", phone:"014-7244153", address:"No. 14, Jalan Sarjana 9 Presint Sarjana, Bandar Universiti Pagoh Pagoh, 84600 Muar, 84600 Pagoh, Johor Darul Ta'zim", mapUrl:"https://share.google/ouW8Tfl0JCvO5hBG1", tags:[],
+   menu:[["Indonesian cuisine",null]]},
 ];
 
 /* Photos (optional): "Exact restaurant name": "photos/file-name.jpg"
