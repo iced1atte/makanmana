@@ -153,7 +153,7 @@ const CATN={affordable:"Affordable meals",hidden:"Hidden gems",near:"Near campus
 const DAYS=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 const closedTxt=r=>r.closed?" · closed "+r.closed.map(d=>DAYS[d]).join(", "):"";
 const isOpen=r=>{const n=new Date();if(r.closed&&r.closed.includes(n.getDay()))return false;const h=n.getHours()+n.getMinutes()/60;return (h>=r.open&&h<r.close)||(h+24>=r.open&&h+24<r.close)};
-const fmtH=h=>{h=h%24;return (h%12||12)+(h>=12?"pm":"am")};
+const fmtH=h=>{h=h%24;const hh=Math.floor(h),mm=Math.round((h-hh)*60);return ((hh%12)||12)+(mm?":"+String(mm).padStart(2,"0"):"")+(hh>=12?"pm":"am")};
 const money=n=>"RM"+(Number.isInteger(n)?n:n.toFixed(2));
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const photo=r=>(typeof PHOTOS!=="undefined"&&PHOTOS[r.name])||"";
