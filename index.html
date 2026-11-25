@@ -224,7 +224,7 @@ function restaurants(){
 
 function detail(sl){
   const r=RESTAURANTS.find(x=>slug(x)===sl);if(!r){location.hash="restaurants";return}
-  const map="https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(r.name.replace(" (sample)","")+" "+r.address);
+  const map=r.mapUrl||"https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(r.name.replace(" (sample)","")+" "+r.address);
   app.innerHTML=`<a class="back" href="#restaurants">← Back to restaurants</a>
   <p class="eyebrow">${esc(r.type)} · ${esc(r.area)}</p><h1>${esc(r.name)}</h1>
   <p class="sm" style="margin-top:6px">${money(r.priceMin)} – ${money(r.priceMax)}</p>
