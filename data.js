@@ -7,7 +7,8 @@
 const CONFIG = {
   teamContact: "makanmana.team@gmail.com",  // team email. Recommend/Owner forms are sent here
   recommendFormUrl: "https://forms.gle/jeVGtQZrxFQJFEk36",  // optional: Google Form link for student recommendations
-  ownerFormUrl: "https://forms.gle/vroQYPEzAjX5QQjW9"       // optional: Google Form link for restaurant owners
+  ownerFormUrl: "https://forms.gle/vroQYPEzAjX5QQjW9",       // optional: Google Form link for restaurant owners
+   feedbackFormUrl: "https://forms.gle/HE4CYFt91cTGPi5w7"
 };
 
 /* One restaurant per block. Copy a block, paste it below another, then edit.
@@ -43,9 +44,19 @@ const RESTAURANTS = [
   {name:"Ayam Gepuk Tokmat", type:"Indonesian", priceMin:1, priceMax:20, open:11, close:21.5, area:"Pagoh", phone:"014-7244153", address:"No. 14, Jalan Sarjana 9 Presint Sarjana, Bandar Universiti Pagoh Pagoh, 84600 Muar, 84600 Pagoh, Johor Darul Ta'zim", mapUrl:"https://share.google/ouW8Tfl0JCvO5hBG1", tags:["near"],
    menu:[["Indonesian cuisine",null]]},
    {name:"Angin Malam", type:"Western & Local", priceMin:5, priceMax:30, open:16.5, close:23.5, area:"Pekan Pagoh", phone:"017-6734123", address:"TL13/14 Lot 3963, Penginapan WNT, Jalan Sekolah Paya Redan, Pagoh", tags:[], closed:[3],
-   menu:[["",null]]},
+   menu:[["Coffee",null],["Sparkling Water",null],["Chicken chop",null],"Fish and chip",null]]},
     {name:"Hayven by KelabKopi", type:"Western & Local", priceMin:5, priceMax:30, open:11, close:19, area:"Muar", phone:"017-6281600", address:"120, Jalan Meriam, Pekan Muar, 84000 Muar, Johor", mapUrl:"https://share.google/nX2vmTcuqXSteSZWL", tags:[], closed:[2],
-   menu:[["Buttermilk",null]]}
+   menu:[["Buttermilk",null]]},
+   {name:"Kagawa Grill", type:"Western, Local & Thai", priceMin:1, priceMax:80, open:11, close:22, area:"Pagoh", phone:"", address:"35, Jln Pagoh Jaya 1, Pusat Perniagaan Pagoh Jaya, 84600 Pagoh, Johor Darul Ta'zim", mapUrl:"https://share.google/RYp8arNXXvnt4SLep", tags:[], closed:[3],
+   menu:[["Western dishes",null],["Local dishes",null],["Thai dishes",null]]},
+  {name:"Kopi 434 Muar", type:"Kopitiam", open:8, close:17.5, area:"Muar", phone:"06-951 3046", address:"121, Jalan Maharani, 84000 Muar, Johor Darul Ta'zim", mapUrl:"https://share.google/wiIUSuXNjsPWmY4Wo", tags:[],
+   menu:[["Local Malaysian kopitiam food",null]]},
+  {name:"Lan Zhou Mee Tarik (Muar)", type:"Chinese", priceMin:1, priceMax:20, open:10, close:23, area:"Muar", phone:"012-237 5302", address:"33, Jalan Sungai Abong Indah 2, Pusat Perniagaan Sungai Abong Indah, 84000 Muar, Johor Darul Ta'zim", mapUrl:"https://share.google/S3SSMzFaPPFwDMknN", tags:[],
+   menu:[["Chinese cuisine",null]]},
+  {name:"Yay For Today Paya Redan", type:"Western, Local & Thai", open:8, close:16, area:"Paya Redan", phone:"013-309 8489", address:"Lot 258, Jalan Pagoh - Bukit Kepong, Paya Redan, Pagoh, 84600 Muar, Johor", mapUrl:"https://share.google/cx9lpDGtEXM5H1jjB", tags:[], closed:[3],
+   menu:[["Western dishes",null],["Local dishes",null],["Thai dishes",null]]},
+  {name:"Laman J", type:"Western", priceMin:1, priceMax:30, open:17.5, close:23.5, area:"Pagoh", phone:"014-231 0096", address:"5413, Jalan Sri Gelam, Pagoh, 84600 Muar, Johor Darul Ta'zim", mapUrl:"https://share.google/3GheehkuBjUpz71wh", tags:[], closed:[2],
+   menu:[["Western dishes",null]]},
 ];
 
 /* Photos (optional): "Exact restaurant name": "photos/file-name.jpg"
