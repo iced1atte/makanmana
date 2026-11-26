@@ -60,7 +60,7 @@ const RESTAURANTS = [
    menu:[["Local Malaysian kopitiam food",null]]},
   {name:"Lan Zhou Mee Tarik (Muar)", cuisines:["Chinese"], halal:null, priceMin:1, priceMax:20, open:10, close:23, area:"Muar", phone:"012-237 5302", address:"33, Jalan Sungai Abong Indah 2, Pusat Perniagaan Sungai Abong Indah, 84000 Muar, Johor Darul Ta'zim", mapUrl:"https://share.google/S3SSMzFaPPFwDMknN", tags:[],
    menu:[["Chinese cuisine",null]]},
-  {name:"Yay For Today Paya Redan", cuisines:["Western","Local","Thai"], halal:null, open:8, close:16, area:"Paya Redan", phone:"013-309 8489", address:"Lot 258, Jalan Pagoh - Bukit Kepong, Paya Redan, Pagoh, 84600 Muar, Johor", mapUrl:"https://share.google/cx9lpDGtEXM5H1jjB", tags:[], closed:[3],
+  {name:"Yay For Today", cuisines:["Western","Local","Thai"], halal:null, open:8, close:16, area:"Paya Redan", phone:"013-309 8489", address:"Lot 258, Jalan Pagoh - Bukit Kepong, Paya Redan, Pagoh, 84600 Muar, Johor", mapUrl:"https://share.google/cx9lpDGtEXM5H1jjB", tags:[], closed:[3],
    menu:[["Western dishes",null],["Local dishes",null],["Thai dishes",null]]},
   {name:"Laman J", cuisines:["Western"], halal:null, priceMin:1, priceMax:30, open:17.5, close:23.5, area:"Pagoh", phone:"014-231 0096", address:"5413, Jalan Sri Gelam, Pagoh, 84600 Muar, Johor Darul Ta'zim", mapUrl:"https://share.google/3GheehkuBjUpz71wh", tags:[], closed:[2],
    menu:[["Western dishes",null]]},
