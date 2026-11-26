@@ -56,8 +56,8 @@ const PHOTOS = {
    "Brado Kitchen": "photos/brado-kitchen.jpg",
    "Nasi Campur Cik Ina Kelate (stall Mok)": "photos/nasi-campur-cik-ina.jpg",
    "Ayam Gepuk Tokmat": "photos/gepuk-tokmat.jpeg",
-   "ThaiRich": "photos/thai-rich.jpeg",
-   "PappaRice by THEsalts": "photos/pappa-rice.jpeg",
+   "ThaiRich": "photos/thai-rich.jpg",
+   "PappaRice by THEsalts": "photos/papparice-by-thesalts.jpg",
    "Hayven by KelabKopi": "photos/hayven-kelabkopi.jpeg"
 
 };
