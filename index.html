@@ -74,6 +74,8 @@ label{display:flex;flex-direction:column;gap:6px;font-size:.85rem;font-weight:70
 .card .tags{margin:4px 0 12px;display:flex;gap:6px;flex-wrap:wrap}
 .card .btn{margin-top:auto;padding:10px 16px}
 .tag{display:inline-block;font-size:.74rem;font-weight:700;padding:3px 10px;border-radius:99px;background:var(--thumb);color:var(--text)}
+.tag.halal{background:transparent;border:1px solid var(--brand);color:var(--brand)}
+.report{color:var(--muted);text-decoration:underline}.report:hover{color:var(--brand)}
 .tag.open{background:var(--brand);color:var(--onbrand)}
 .tag.closed{background:transparent;border:1px solid var(--line);color:var(--muted)}
 /* panels */
@@ -159,16 +161,20 @@ const fmtH=h=>{h=h%24;const hh=Math.floor(h),mm=Math.round((h-hh)*60);return ((h
 const priceTxt=r=>r.priceMin==null?"Price not listed":money(r.priceMin)+" – "+money(r.priceMax);
 const money=n=>"RM"+(Number.isInteger(n)?n:n.toFixed(2));
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const cuisinesOf=r=>Array.isArray(r.cuisines)&&r.cuisines.length?r.cuisines:String(r.type||"").split(/\s*(?:,|&|\/)\s*/).filter(Boolean);
+const isMapsUrl=u=>/^https?:\/\/(maps\.app\.goo\.gl|goo\.gl\/maps|(www\.)?google\.[a-z.]+\/maps|maps\.google\.)/i.test(u||"");
+const mapLink=r=>{const n=r.name.replace(/\s*\(sample\)/i,""),a=r.address||"";
+  return isMapsUrl(r.mapUrl)?r.mapUrl:"https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(a.toLowerCase().includes(n.toLowerCase())?a:(a?n+", "+a:n))};
 const photo=r=>(typeof PHOTOS!=="undefined"&&PHOTOS[r.name])||"";
 const thumb=(r,cls)=>photo(r)?`<img class="pic" src="${esc(photo(r))}" alt="${esc(r.name)}" loading="lazy">`:`<img class="ph" src="images/logo.png" alt="">`;
 
 function filtered(){
   return RESTAURANTS.filter(r=>{
     const q=state.q.trim().toLowerCase();
-    if(q&&!(r.name+" "+r.type+" "+r.area+" "+r.menu.map(m=>m[0]).join(" ")).toLowerCase().includes(q))return false;
+    if(q&&!(r.name+" "+cuisinesOf(r).join(" ")+" "+r.area+" "+r.menu.map(m=>m[0]).join(" ")).toLowerCase().includes(q))return false;
     if(state.cat==="open"&&!isOpen(r))return false;
     if(TAGN[state.cat]&&!r.tags.includes(state.cat))return false;
-    if(state.type!=="all"&&r.type!==state.type)return false;
+    if(state.type!=="all"&&!cuisinesOf(r).includes(state.type))return false;
     if(state.area!=="all"&&r.area!==state.area)return false;
     if(state.price!=="all"&&(r.priceMin==null||r.priceMin>+state.price))return false;
     if(state.pick&&!(r.tags.includes("affordable")||r.tags.includes("near")))return false;
@@ -178,10 +184,10 @@ function filtered(){
 function cardHTML(r){try{return cardBody(r)}catch(e){return `<div class="empty">Could not display “${esc(r&&r.name||"a restaurant")}”. Please check its entry in data.js.</div>`}}
 function cardBody(r){
   return `<article class="card"><div class="thumb">${thumb(r)}</div><div class="body">
-  <div class="meta">${esc(r.type)} · ${esc(r.area)}</div><h3>${esc(r.name)}</h3>
+  <div class="meta">${esc(cuisinesOf(r).join(", "))} · ${esc(r.area)}</div><h3>${esc(r.name)}</h3>
   <div class="price">${priceTxt(r)}</div>
   <div class="sm">${fmtH(r.open)} – ${fmtH(r.close)}${closedTxt(r)}</div>
-  <div class="tags"><span class="tag ${isOpen(r)?"open":"closed"}">${isOpen(r)?"Open now":"Closed"}</span>${r.tags.map(t=>`<span class="tag">${TAGN[t]}</span>`).join("")}</div>
+  <div class="tags"><span class="tag ${isOpen(r)?"open":"closed"}">${isOpen(r)?"Open now":"Closed"}</span>${r.halal===true?'<span class="tag halal">Halal – Verified</span>':""}${(r.tags||[]).map(t=>`<span class="tag">${TAGN[t]}</span>`).join("")}</div>
   <a class="btn" href="#restaurant-${slug(r)}">View details</a></div></article>`;
 }
 
@@ -201,13 +207,13 @@ function home(){
 
 function restaurants(){
   const opt=(arr,v)=>arr.map(t=>`<option ${v===t?"selected":""}>${esc(t)}</option>`).join("");
-  const types=[...new Set(RESTAURANTS.map(r=>r.type))],areas=[...new Set(RESTAURANTS.map(r=>r.area))];
+  const types=[...new Set(RESTAURANTS.flatMap(cuisinesOf))].sort((a,b)=>a.localeCompare(b)),areas=[...new Set(RESTAURANTS.map(r=>r.area))];
   app.innerHTML=`<p class="eyebrow">The food lineup</p><h1>Find your next makan spot</h1>
   <p class="sm" style="margin-top:6px">Please check current hours, prices and location before heading out.</p>
   <div class="panel fbar" style="padding:16px">
    <label>Search<input class="field" type="search" id="q" placeholder="Name or dish" value="${esc(state.q)}"></label>
    <label>Price<select class="field" id="price"><option value="all">Any price</option>${[5,10,15].map(p=>`<option value="${p}" ${state.price==p?"selected":""}>From under RM${p+1}</option>`).join("")}</select></label>
-   <label>Food type<select class="field" id="type"><option value="all">All types</option>${opt(types,state.type)}</select></label>
+   <label>Cuisine<select class="field" id="type"><option value="all">All cuisines</option>${opt(types,state.type)}</select></label>
    <label>Location<select class="field" id="area"><option value="all">All locations</option>${opt(areas,state.area)}</select></label>
    <label class="chk"><input type="checkbox" id="pick" ${state.pick?"checked":""}> Student picks</label></div>
   <p class="count" id="count"></p><div class="grid" id="grid"></div><div class="pager" id="pager"></div>`;
@@ -228,9 +234,11 @@ function restaurants(){
 
 function detail(sl){
   const r=RESTAURANTS.find(x=>slug(x)===sl);if(!r){location.hash="restaurants";return}
-  const map=r.mapUrl||"https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(r.name.replace(" (sample)","")+" "+r.address);
+  const map=mapLink(r),fb=CONFIG.feedbackFormUrl;
+  const shareMsg=r.name.replace(/\s*\(sample\)/i,"")+"\n"+(r.address?r.address+"\n":"")+"Price: "+priceTxt(r)+"\n"+location.href.split("#")[0]+"#restaurant-"+slug(r);
+  const wa="https://wa.me/?text="+encodeURIComponent(shareMsg);
   app.innerHTML=`<a class="back" href="#restaurants">← Back to restaurants</a>
-  <p class="eyebrow">${esc(r.type)} · ${esc(r.area)}</p><h1>${esc(r.name)}</h1>
+  <p class="eyebrow">${esc(cuisinesOf(r).join(", "))} · ${esc(r.area)}</p><h1>${esc(r.name)}</h1>
   <p class="sm" style="margin-top:6px">${priceTxt(r)}</p>
   <div class="cover">${thumb(r)}</div>
   <div class="two"><div class="panel"><h3>What to order</h3><div class="rows">${r.menu.map(m=>`<div><span>${esc(m[0])}</span><b>${m[1]==null?"":money(m[1])}</b></div>`).join("")}</div></div>
@@ -238,30 +246,49 @@ function detail(sl){
    <div><span>Hours</span><b style="text-align:right">${fmtH(r.open)} – ${fmtH(r.close)}${closedTxt(r)}</b></div>
    <div><span>Status</span><span class="tag ${isOpen(r)?"open":"closed"}">${isOpen(r)?"Open now":"Closed"}</span></div>
    <div><span>Phone</span><b>${r.phone?`<a href="tel:${esc(r.phone.replace(/\s/g,""))}">${esc(r.phone)}</a>`:"Not yet added"}</b></div>
+   <div><span>Halal</span><b>${r.halal===true?"Halal – Verified":'<span class="sm" style="font-weight:600">Not yet verified</span>'}</b></div>
    <div><span>Area</span><b>${esc(r.area)}</b></div>
    <div><span>Address</span><b style="text-align:right">${esc(r.address)}</b></div></div>
-   <p style="margin:16px 0 0"><a class="btn" target="_blank" rel="noopener" href="${map}">Open in Google Maps</a></p></div></div>
+   <p style="margin:16px 0 0;display:flex;gap:10px;flex-wrap:wrap"><a class="btn" target="_blank" rel="noopener" href="${esc(map)}">Open in Google Maps</a><a class="btn line" target="_blank" rel="noopener" href="${wa}">Share this Restaurant</a></p></div></div>
   <div class="tip"><b>Student tip</b><br>${esc(r.tip||"Check the current menu and location before travelling.")}</div>
+  ${fb?`<p class="sm" style="margin-top:16px">Something not right? <a class="report" href="${esc(fb)}" target="_blank" rel="noopener">Report Wrong Information</a></p>`:""}
   ${r.name.includes("(sample)")?'<p class="sm" style="margin-top:16px">This is a sample entry, not a verified business. Please confirm prices, hours and location before visiting.</p>':""}`;
 }
 
 /* ---------- Spin the wheel ---------- */
-let spins=0,pool=[],wf={price:"all",tag:"all"};
+let spins=0,pool=[],wf={price:"all",cuisine:"all",open:false,near:false};
 const WC=[["#b9532d","#ffffff"],["#3a2a20","#f6ead6"],["#e2c9a0","#3a2a20"],["#7a4a35","#ffffff"],["#d98e66","#3a2a20"],["#5b3f30","#f6ead6"]];
 function wheel(){
-  app.innerHTML=`<div class="wheelpage"><h1>Spin the Wheel</h1><p class="sm" style="margin-top:6px">Choose the places you like, then spin to decide where to eat.</p>
-  <div class="wf" style="margin-top:20px"><label>Price<select class="field" id="wp"><option value="all">Any price</option><option value="6">From under RM7</option><option value="10">From under RM11</option></select></label>
-  <label>Filter<select class="field" id="wt"><option value="all">All places</option><option value="near">Near campus</option><option value="affordable">Affordable</option><option value="hidden">Hidden gems</option></select></label></div>
-  <div class="sel" id="picks"></div>
+  const cuisines=[...new Set(RESTAURANTS.flatMap(cuisinesOf))].sort((a,b)=>a.localeCompare(b));
+  app.innerHTML=`<div class="wheelpage"><h1>Spin the Wheel</h1><p class="sm" style="margin-top:6px">Narrow it down if you like, then spin to decide where to eat.</p>
+  <div class="wf" style="margin-top:20px">
+   <label>Budget<select class="field" id="wp"><option value="all">Any budget</option><option value="10">Under RM10</option><option value="20">Under RM20</option><option value="30">Under RM30</option></select></label>
+   <label>Cuisine<select class="field" id="wc"><option value="all">All cuisines</option>${cuisines.map(c=>`<option>${esc(c)}</option>`).join("")}</select></label>
+   <label class="chk"><input type="checkbox" id="wo"> Open now</label>
+   <label class="chk"><input type="checkbox" id="wn"> Near campus</label></div>
+  <p class="note" style="margin-top:8px;text-align:left">Budget uses each place’s lowest price. Places with no listed price are left out when a budget is chosen.</p>
+  <details class="alt" style="text-align:left"><summary id="psum"></summary><div class="sel" id="picks"></div><div class="sel"><button class="pill" id="pall" type="button">Select all</button><button class="pill" id="pnone" type="button">Clear</button></div></details>
+  <p class="count" id="wcount" style="margin:20px 0 0"></p>
   <div class="wheelbox"><div class="pointer"></div><canvas id="cv" width="640" height="640"></canvas></div>
   <button class="btn" id="spin">Spin</button><div class="result" id="res" style="margin-top:20px"></div></div>`;
   const sel=new Set(RESTAURANTS.map((_,i)=>i));
-  const compute=()=>{pool=RESTAURANTS.map((r,i)=>({r,i})).filter(({r,i})=>sel.has(i)&&(wf.price==="all"||(r.priceMin!=null&&r.priceMin<=+wf.price))&&(wf.tag==="all"||r.tags.includes(wf.tag)))};
-  const picks=()=>{$("#picks").innerHTML=RESTAURANTS.map((r,i)=>`<button class="pill ${sel.has(i)?"on":""}" data-p="${i}">${esc(r.name.replace(" (sample)",""))}</button>`).join("");
+  const compute=()=>{pool=RESTAURANTS.map((r,i)=>({r,i})).filter(({r,i})=>sel.has(i)
+    &&(wf.price==="all"||(r.priceMin!=null&&r.priceMin<=+wf.price))
+    &&(wf.cuisine==="all"||cuisinesOf(r).includes(wf.cuisine))
+    &&(!wf.open||isOpen(r))
+    &&(!wf.near||(r.tags||[]).includes("near")))};
+  const picks=()=>{$("#psum").textContent=`Choose places (${sel.size} of ${RESTAURANTS.length} selected)`;
+    $("#picks").innerHTML=RESTAURANTS.map((r,i)=>`<button type="button" class="pill ${sel.has(i)?"on":""}" data-p="${i}">${esc(r.name.replace(" (sample)",""))}</button>`).join("");
     document.querySelectorAll("[data-p]").forEach(b=>b.onclick=()=>{const i=+b.dataset.p;sel.has(i)?sel.delete(i):sel.add(i);refresh()})};
-  const refresh=()=>{compute();picks();drawWheel();$("#res").textContent=""};
+  const refresh=()=>{compute();picks();
+    $("#wcount").textContent=pool.length+(pool.length===1?" place":" places")+" on the wheel"+(pool.length<2?". Loosen the filters or choose more places.":"");
+    drawWheel();$("#res").textContent=""};
   $("#wp").onchange=e=>{wf.price=e.target.value;refresh()};
-  $("#wt").onchange=e=>{wf.tag=e.target.value;refresh()};
+  $("#wc").onchange=e=>{wf.cuisine=e.target.value;refresh()};
+  $("#wo").onchange=e=>{wf.open=e.target.checked;refresh()};
+  $("#wn").onchange=e=>{wf.near=e.target.checked;refresh()};
+  $("#pall").onclick=()=>{RESTAURANTS.forEach((_,i)=>sel.add(i));refresh()};
+  $("#pnone").onclick=()=>{sel.clear();refresh()};
   $("#spin").onclick=()=>{
     if(pool.length<2){$("#res").textContent="Choose at least 2 places";return}
     const n=pool.length,a=360/n,w=Math.floor(Math.random()*n);spins++;
@@ -269,6 +296,7 @@ function wheel(){
     $("#cv").style.transform=`rotate(${R}deg)`;$("#spin").disabled=true;$("#res").textContent="";
     setTimeout(()=>{$("#spin").disabled=false;const r=pool[w].r;$("#res").innerHTML=`${esc(r.name.replace(" (sample)",""))}<a class="btn" href="#restaurant-${slug(r)}">View details</a>`},4100);
   };
+  wf={price:"all",cuisine:"all",open:false,near:false};
   refresh();
 }
 function drawWheel(){
