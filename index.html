@@ -122,6 +122,7 @@ details.alt{margin-top:20px}details.alt summary{cursor:pointer;color:var(--brand
 footer{background:var(--foot);color:#f1e3c8;padding:28px 0;font-size:.9rem}
 footer .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
 footer p{margin:4px 0 0;max-width:340px;color:#d8c7a8}
+footer a{color:#f1e3c8;font-weight:600;text-decoration:underline}
 footer .brand{color:#f1e3c8;font-size:1.1rem}
 @media(max-width:640px){.hero{padding:36px 20px}.hero h1{font-size:1.8rem}.search{flex-direction:column}h1{font-size:1.6rem}.wf{grid-template-columns:1fr}nav{width:100%;overflow-x:auto;flex-wrap:nowrap}nav a{white-space:nowrap}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
@@ -137,7 +138,7 @@ footer .brand{color:#f1e3c8;font-size:1.1rem}
 <main class="wrap" id="app"></main>
 <footer><div class="wrap">
   <div><span class="brand">Makan Mana?</span><p>A student-friendly guide to eateries around Pagoh and Muar.</p></div>
-  <div><b>Made for Pagoh students</b><p>Questions or updates? Use the Recommend page, or email <span id="contact"></span>.</p></div>
+  <div><b>Made for Pagoh students</b><p>Questions or updates? Use the Recommend page, or email <span id="contact"></span>.</p><p id="fbp" style="display:none"><a id="fb" target="_blank" rel="noopener">Give us feedback</a></p></div>
 </div></footer>
 
 <script src="data.js"></script>
@@ -148,12 +149,14 @@ const PER=9;
 RESTAURANTS.sort((a,b)=>a.name.localeCompare(b.name,"en",{sensitivity:"base"}));
 const slug=r=>r.name.replace(/\s*\(sample\)/i,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
 $("#contact").textContent=CONFIG.teamContact;
+if(CONFIG.feedbackFormUrl){$("#fb").href=CONFIG.feedbackFormUrl;$("#fbp").style.display="block"}
 const TAGN={affordable:"Affordable",hidden:"Hidden gem",near:"Near campus"};
 const CATN={affordable:"Affordable meals",hidden:"Hidden gems",near:"Near campus",open:"Open now"};
 const DAYS=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 const closedTxt=r=>r.closed?" · closed "+r.closed.map(d=>DAYS[d]).join(", "):"";
 const isOpen=r=>{const n=new Date();if(r.closed&&r.closed.includes(n.getDay()))return false;const h=n.getHours()+n.getMinutes()/60;return (h>=r.open&&h<r.close)||(h+24>=r.open&&h+24<r.close)};
 const fmtH=h=>{h=h%24;const hh=Math.floor(h),mm=Math.round((h-hh)*60);return ((hh%12)||12)+(mm?":"+String(mm).padStart(2,"0"):"")+(hh>=12?"pm":"am")};
+const priceTxt=r=>r.priceMin==null?"Price not listed":money(r.priceMin)+" – "+money(r.priceMax);
 const money=n=>"RM"+(Number.isInteger(n)?n:n.toFixed(2));
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const photo=r=>(typeof PHOTOS!=="undefined"&&PHOTOS[r.name])||"";
@@ -167,15 +170,16 @@ function filtered(){
     if(TAGN[state.cat]&&!r.tags.includes(state.cat))return false;
     if(state.type!=="all"&&r.type!==state.type)return false;
     if(state.area!=="all"&&r.area!==state.area)return false;
-    if(state.price!=="all"&&r.priceMin>+state.price)return false;
+    if(state.price!=="all"&&(r.priceMin==null||r.priceMin>+state.price))return false;
     if(state.pick&&!(r.tags.includes("affordable")||r.tags.includes("near")))return false;
     return true;
   });
 }
-function cardHTML(r){
+function cardHTML(r){try{return cardBody(r)}catch(e){return `<div class="empty">Could not display “${esc(r&&r.name||"a restaurant")}”. Please check its entry in data.js.</div>`}}
+function cardBody(r){
   return `<article class="card"><div class="thumb">${thumb(r)}</div><div class="body">
   <div class="meta">${esc(r.type)} · ${esc(r.area)}</div><h3>${esc(r.name)}</h3>
-  <div class="price">${money(r.priceMin)} – ${money(r.priceMax)}</div>
+  <div class="price">${priceTxt(r)}</div>
   <div class="sm">${fmtH(r.open)} – ${fmtH(r.close)}${closedTxt(r)}</div>
   <div class="tags"><span class="tag ${isOpen(r)?"open":"closed"}">${isOpen(r)?"Open now":"Closed"}</span>${r.tags.map(t=>`<span class="tag">${TAGN[t]}</span>`).join("")}</div>
   <a class="btn" href="#restaurant-${slug(r)}">View details</a></div></article>`;
@@ -227,7 +231,7 @@ function detail(sl){
   const map=r.mapUrl||"https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(r.name.replace(" (sample)","")+" "+r.address);
   app.innerHTML=`<a class="back" href="#restaurants">← Back to restaurants</a>
   <p class="eyebrow">${esc(r.type)} · ${esc(r.area)}</p><h1>${esc(r.name)}</h1>
-  <p class="sm" style="margin-top:6px">${money(r.priceMin)} – ${money(r.priceMax)}</p>
+  <p class="sm" style="margin-top:6px">${priceTxt(r)}</p>
   <div class="cover">${thumb(r)}</div>
   <div class="two"><div class="panel"><h3>What to order</h3><div class="rows">${r.menu.map(m=>`<div><span>${esc(m[0])}</span><b>${m[1]==null?"":money(m[1])}</b></div>`).join("")}</div></div>
   <div class="panel"><h3>Plan your visit</h3><div class="rows">
@@ -246,13 +250,13 @@ let spins=0,pool=[],wf={price:"all",tag:"all"};
 const WC=[["#b9532d","#ffffff"],["#3a2a20","#f6ead6"],["#e2c9a0","#3a2a20"],["#7a4a35","#ffffff"],["#d98e66","#3a2a20"],["#5b3f30","#f6ead6"]];
 function wheel(){
   app.innerHTML=`<div class="wheelpage"><h1>Spin the Wheel</h1><p class="sm" style="margin-top:6px">Choose the places you like, then spin to decide where to eat.</p>
-  <div class="wf" style="margin-top:20px"><label>Price<select class="field" id="wp"><option value="all">Any price</option><option value="6">From under RM15</option><option value="10">From under RM30</option></select></label>
+  <div class="wf" style="margin-top:20px"><label>Price<select class="field" id="wp"><option value="all">Any price</option><option value="6">From under RM7</option><option value="10">From under RM11</option></select></label>
   <label>Filter<select class="field" id="wt"><option value="all">All places</option><option value="near">Near campus</option><option value="affordable">Affordable</option><option value="hidden">Hidden gems</option></select></label></div>
   <div class="sel" id="picks"></div>
   <div class="wheelbox"><div class="pointer"></div><canvas id="cv" width="640" height="640"></canvas></div>
   <button class="btn" id="spin">Spin</button><div class="result" id="res" style="margin-top:20px"></div></div>`;
   const sel=new Set(RESTAURANTS.map((_,i)=>i));
-  const compute=()=>{pool=RESTAURANTS.map((r,i)=>({r,i})).filter(({r,i})=>sel.has(i)&&(wf.price==="all"||r.priceMin<=+wf.price)&&(wf.tag==="all"||r.tags.includes(wf.tag)))};
+  const compute=()=>{pool=RESTAURANTS.map((r,i)=>({r,i})).filter(({r,i})=>sel.has(i)&&(wf.price==="all"||(r.priceMin!=null&&r.priceMin<=+wf.price))&&(wf.tag==="all"||r.tags.includes(wf.tag)))};
   const picks=()=>{$("#picks").innerHTML=RESTAURANTS.map((r,i)=>`<button class="pill ${sel.has(i)?"on":""}" data-p="${i}">${esc(r.name.replace(" (sample)",""))}</button>`).join("");
     document.querySelectorAll("[data-p]").forEach(b=>b.onclick=()=>{const i=+b.dataset.p;sel.has(i)?sel.delete(i):sel.add(i);refresh()})};
   const refresh=()=>{compute();picks();drawWheel();$("#res").textContent=""};
@@ -306,7 +310,7 @@ function about(){
   <p style="margin-top:12px">New to Pagoh? Food information is scattered across maps, social media and chat groups, which makes it hard to compare places and decide. Makan Mana? brings menus, prices, opening hours and map links together in one simple website, with no sign-up needed.</p>
   <div class="two" style="margin-top:24px"><div class="panel"><h3>How it works</h3><p class="sm">Browse or search for eateries, filter by price and food type, and open a restaurant to see its menu and location. If you cannot decide, spin the wheel.</p></div>
   <div class="panel"><h3>Who keeps it updated</h3><p class="sm">Students recommend places and send updates, restaurant owners share current menus and prices, and the project team reviews every submission.</p></div></div>
-  <p class="sm">Notes: This website is a project under Computer Mediated Communication (ENCO 4105).</p></div>`;
+  <p class="sm">Project team: add your names here.</p></div>`;
 }
 const pages={home,restaurants,wheel,recommend:()=>formPage("recommend"),owners:()=>formPage("owners"),about};
 function route(){
