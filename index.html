@@ -74,7 +74,6 @@ label{display:flex;flex-direction:column;gap:6px;font-size:.85rem;font-weight:70
 .card .tags{margin:4px 0 12px;display:flex;gap:6px;flex-wrap:wrap}
 .card .btn{margin-top:auto;padding:10px 16px}
 .tag{display:inline-block;font-size:.74rem;font-weight:700;padding:3px 10px;border-radius:99px;background:var(--thumb);color:var(--text)}
-.tag.halal{background:transparent;border:1px solid var(--brand);color:var(--brand)}
 .report{color:var(--muted);text-decoration:underline}.report:hover{color:var(--brand)}
 .tag.open{background:var(--brand);color:var(--onbrand)}
 .tag.closed{background:transparent;border:1px solid var(--line);color:var(--muted)}
@@ -156,8 +155,12 @@ const TAGN={affordable:"Affordable",hidden:"Hidden gem",near:"Near campus"};
 const CATN={affordable:"Affordable meals",hidden:"Hidden gems",near:"Near campus",open:"Open now"};
 const DAYS=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 const closedTxt=r=>r.closed?" · closed "+r.closed.map(d=>DAYS[d]).join(", "):"";
-const isOpen=r=>{const n=new Date();if(r.closed&&r.closed.includes(n.getDay()))return false;const h=n.getHours()+n.getMinutes()/60;return (h>=r.open&&h<r.close)||(h+24>=r.open&&h+24<r.close)};
+const hasHours=r=>r.open!=null&&r.close!=null;
+const isOpen=r=>{if(!hasHours(r))return false;const n=new Date();if(r.closed&&r.closed.includes(n.getDay()))return false;const h=n.getHours()+n.getMinutes()/60;return (h>=r.open&&h<r.close)||(h+24>=r.open&&h+24<r.close)};
 const fmtH=h=>{h=h%24;const hh=Math.floor(h),mm=Math.round((h-hh)*60);return ((hh%12)||12)+(mm?":"+String(mm).padStart(2,"0"):"")+(hh>=12?"pm":"am")};
+const hoursTxt=r=>(hasHours(r)?fmtH(r.open)+" – "+fmtH(r.close):"Hours not listed")+closedTxt(r);
+const CUISINES=["Chinese","Dessert","Indonesian","Japanese","Local","Malay","Thai","Western"];
+const NOTICE="Please check hours, prices, location and halal status directly with the restaurant.";
 const priceTxt=r=>r.priceMin==null?"Price not listed":money(r.priceMin)+" – "+money(r.priceMax);
 const money=n=>"RM"+(Number.isInteger(n)?n:n.toFixed(2));
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -167,6 +170,8 @@ const mapLink=r=>{const n=r.name.replace(/\s*\(sample\)/i,""),a=r.address||"";
   return isMapsUrl(r.mapUrl)?r.mapUrl:"https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(a.toLowerCase().includes(n.toLowerCase())?a:(a?n+", "+a:n))};
 const photo=r=>(typeof PHOTOS!=="undefined"&&PHOTOS[r.name])||"";
 const thumb=(r,cls)=>photo(r)?`<img class="pic" src="${esc(photo(r))}" alt="${esc(r.name)}" loading="lazy">`:`<img class="ph" src="images/logo.png" alt="">`;
+
+RESTAURANTS.forEach(r=>cuisinesOf(r).forEach(c=>{if(!CUISINES.includes(c))console.warn("Unknown cuisine \""+c+"\" in "+r.name)}));
 
 function filtered(){
   return RESTAURANTS.filter(r=>{
@@ -186,8 +191,8 @@ function cardBody(r){
   return `<article class="card"><div class="thumb">${thumb(r)}</div><div class="body">
   <div class="meta">${esc(cuisinesOf(r).join(", "))} · ${esc(r.area)}</div><h3>${esc(r.name)}</h3>
   <div class="price">${priceTxt(r)}</div>
-  <div class="sm">${fmtH(r.open)} – ${fmtH(r.close)}${closedTxt(r)}</div>
-  <div class="tags"><span class="tag ${isOpen(r)?"open":"closed"}">${isOpen(r)?"Open now":"Closed"}</span>${r.halal===true?'<span class="tag halal">Halal – Verified</span>':""}${(r.tags||[]).map(t=>`<span class="tag">${TAGN[t]}</span>`).join("")}</div>
+  <div class="sm">${hoursTxt(r)}</div>
+  <div class="tags">${hasHours(r)?`<span class="tag ${isOpen(r)?"open":"closed"}">${isOpen(r)?"Open now":"Closed"}</span>`:""}${(r.tags||[]).map(t=>`<span class="tag">${TAGN[t]}</span>`).join("")}</div>
   <a class="btn" href="#restaurant-${slug(r)}">View details</a></div></article>`;
 }
 
@@ -207,9 +212,9 @@ function home(){
 
 function restaurants(){
   const opt=(arr,v)=>arr.map(t=>`<option ${v===t?"selected":""}>${esc(t)}</option>`).join("");
-  const types=[...new Set(RESTAURANTS.flatMap(cuisinesOf))].sort((a,b)=>a.localeCompare(b)),areas=[...new Set(RESTAURANTS.map(r=>r.area))];
+  const types=CUISINES,areas=[...new Set(RESTAURANTS.map(r=>r.area))];
   app.innerHTML=`<p class="eyebrow">The food lineup</p><h1>Find your next makan spot</h1>
-  <p class="sm" style="margin-top:6px">Please check current hours, prices and location before heading out.</p>
+  <p class="sm" style="margin-top:6px">${NOTICE}</p>
   <div class="panel fbar" style="padding:16px">
    <label>Search<input class="field" type="search" id="q" placeholder="Name or dish" value="${esc(state.q)}"></label>
    <label>Price<select class="field" id="price"><option value="all">Any price</option>${[5,10,15].map(p=>`<option value="${p}" ${state.price==p?"selected":""}>From under RM${p+1}</option>`).join("")}</select></label>
@@ -241,12 +246,11 @@ function detail(sl){
   <p class="eyebrow">${esc(cuisinesOf(r).join(", "))} · ${esc(r.area)}</p><h1>${esc(r.name)}</h1>
   <p class="sm" style="margin-top:6px">${priceTxt(r)}</p>
   <div class="cover">${thumb(r)}</div>
-  <div class="two"><div class="panel"><h3>What to order</h3><div class="rows">${r.menu.map(m=>`<div><span>${esc(m[0])}</span><b>${m[1]==null?"":money(m[1])}</b></div>`).join("")}</div></div>
+  <div class="two"><div class="panel"><h3>What to order</h3><div class="rows">${r.menu.map(m=>`<div><span>${esc(m[0])}</span><b style="text-align:right">${m[1]==null?"":typeof m[1]=="string"?esc(m[1]):money(m[1])}</b></div>`).join("")}</div>${r.menuNote?`<p class="sm" style="margin:12px 0 0">${esc(r.menuNote)}</p>`:""}</div>
   <div class="panel"><h3>Plan your visit</h3><div class="rows">
-   <div><span>Hours</span><b style="text-align:right">${fmtH(r.open)} – ${fmtH(r.close)}${closedTxt(r)}</b></div>
-   <div><span>Status</span><span class="tag ${isOpen(r)?"open":"closed"}">${isOpen(r)?"Open now":"Closed"}</span></div>
+   <div><span>Hours</span><b style="text-align:right">${hoursTxt(r)}${r.hoursNote?`<br><span class="sm" style="font-weight:600">${esc(r.hoursNote)}</span>`:""}</b></div>
+   <div><span>Status</span>${hasHours(r)?`<span class="tag ${isOpen(r)?"open":"closed"}">${isOpen(r)?"Open now":"Closed"}</span>`:'<span class="sm" style="font-weight:600">Not listed</span>'}</div>
    <div><span>Phone</span><b>${r.phone?`<a href="tel:${esc(r.phone.replace(/\s/g,""))}">${esc(r.phone)}</a>`:"Not yet added"}</b></div>
-   <div><span>Halal</span><b>${r.halal===true?"Halal – Verified":'<span class="sm" style="font-weight:600">Not yet verified</span>'}</b></div>
    <div><span>Area</span><b>${esc(r.area)}</b></div>
    <div><span>Address</span><b style="text-align:right">${esc(r.address)}</b></div></div>
    <p style="margin:16px 0 0;display:flex;gap:10px;flex-wrap:wrap"><a class="btn" target="_blank" rel="noopener" href="${esc(map)}">Open in Google Maps</a><a class="btn line" target="_blank" rel="noopener" href="${wa}">Share this Restaurant</a></p></div></div>
@@ -259,7 +263,7 @@ function detail(sl){
 let spins=0,pool=[],wf={price:"all",cuisine:"all",open:false,near:false};
 const WC=[["#b9532d","#ffffff"],["#3a2a20","#f6ead6"],["#e2c9a0","#3a2a20"],["#7a4a35","#ffffff"],["#d98e66","#3a2a20"],["#5b3f30","#f6ead6"]];
 function wheel(){
-  const cuisines=[...new Set(RESTAURANTS.flatMap(cuisinesOf))].sort((a,b)=>a.localeCompare(b));
+  const cuisines=CUISINES;
   app.innerHTML=`<div class="wheelpage"><h1>Spin the Wheel</h1><p class="sm" style="margin-top:6px">Narrow it down if you like, then spin to decide where to eat.</p>
   <div class="wf" style="margin-top:20px">
    <label>Budget<select class="field" id="wp"><option value="all">Any budget</option><option value="10">Under RM10</option><option value="20">Under RM20</option><option value="30">Under RM30</option></select></label>
@@ -338,6 +342,7 @@ function about(){
   <p style="margin-top:12px">New to Pagoh? Food information is scattered across maps, social media and chat groups, which makes it hard to compare places and decide. Makan Mana? brings menus, prices, opening hours and map links together in one simple website, with no sign-up needed.</p>
   <div class="two" style="margin-top:24px"><div class="panel"><h3>How it works</h3><p class="sm">Browse or search for eateries, filter by price and food type, and open a restaurant to see its menu and location. If you cannot decide, spin the wheel.</p></div>
   <div class="panel"><h3>Who keeps it updated</h3><p class="sm">Students recommend places and send updates, restaurant owners share current menus and prices, and the project team reviews every submission.</p></div></div>
+  <p class="sm">${NOTICE}</p>
   <p class="sm">Project team: add your names here.</p></div>`;
 }
 const pages={home,restaurants,wheel,recommend:()=>formPage("recommend"),owners:()=>formPage("owners"),about};
