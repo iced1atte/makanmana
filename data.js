@@ -140,7 +140,7 @@ const PHOTOS = {
    "Laman J": "photos/laman-j.webp",
    "Nasi Beriani, Panchor": "photos/nasi-beriani-panchor.webp",
    "NoorJannah’s Kitchen": "photos/noorjannahs-kitchen.webp",
-   "Nuridah Tomyam": "photos/nuridah-tomyam.webp"
+   "Nuridah Tomyam": "photos/nuridah-tomyam.webp",
+   "Nasi Ayam Berempah Terengganu": "photos/nasi-ayam-berempah-terengganu.webp"
    
-
 };
