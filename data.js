@@ -131,7 +131,16 @@ const PHOTOS = {
    "Kafe Dandan": "photos/kafe-dandan.webp",
    "Kopi 434 Muar": "photos/kopi-434-muar.webp",
    "Kagawa Grill": "photos/kagawa-grill.webp",
-   "Kedai Makan Haji Masjuki": "photos/kedai-makan-haji-masjuki.webp"
+   "Kedai Makan Haji Masjuki": "photos/kedai-makan-haji-masjuki.webp",
+   "Nasuha Herbs & Spice Farm": "photos/nasuha-herbs-spice-farm.webp",
+   "Layers, Muar": "photos/layers-muar.webp",
+   "Kopi Changkung": "photos/kopi-changkung.webp",
+   "Mee Bandung Abu Bakar Hanipah": "photos/mee-bandung-abu-bakar-hanipah.webp",
+   "Lan Zhou Mee Tarik (Muar)": "photos/lan-zhou-mee-tarik-muar.webp",
+   "Laman J": "photos/laman-j.webp",
+   "Nasi Beriani, Panchor": "photos/nasi-beriani-panchor.webp",
+   "NoorJannah’s Kitchen": "photos/noorjannahs-kitchen.webp",
+   "Nuridah Tomyam": "photos/nuridah-tomyam.webp"
    
 
 };
