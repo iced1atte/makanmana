@@ -124,6 +124,9 @@ const PHOTOS = {
    "Hayven by KelabKopi": "photos/hayven-kelabkopi.jpeg",
    "Asam Pedas Claypot": "photos/asam-pedas-claypot.webp",
    "Asam Pedas Panchor": "photos/asam-pedas-panchor.webp",
-   "Ayam Gepuk Ganas": "photos/ayam-gepuk-ganas.webp"
+   "Ayam Gepuk Ganas": "photos/ayam-gepuk-ganas.webp",
+   "Cafe Pos Pagoh Uda Leena": "photos/cafe-pos-pagoh-uda-leena.webp",
+   "Dapur Cik Tina": "photos/dapur-cik-tina.webp",
+   "Cafe TPJ": "photos/cafe-tpj.webp"
 
 };
