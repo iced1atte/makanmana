@@ -127,6 +127,11 @@ const PHOTOS = {
    "Ayam Gepuk Ganas": "photos/ayam-gepuk-ganas.webp",
    "Cafe Pos Pagoh Uda Leena": "photos/cafe-pos-pagoh-uda-leena.webp",
    "Dapur Cik Tina": "photos/dapur-cik-tina.webp",
-   "Cafe TPJ": "photos/cafe-tpj.webp"
+   "Cafe TPJ": "photos/cafe-tpj.webp",
+   "Kafe Dandan": "photos/kafe-dandan.webp",
+   "Kopi 434 Muar": "photos/kopi-434-muar.webp",
+   "Kagawa Grill": "photos/kagawa-grill.webp",
+   "Kedai Makan Haji Masjuki": "photos/kedai-makan-haji-masjuki.webp"
+   
 
 };
