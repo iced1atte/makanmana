@@ -153,5 +153,5 @@ const PHOTOS = {
    "Warung Tok Lan Janggut, Pekan Pagoh": "photos/warung-tok-lan-janggut-pekan-pagoh.jpg",
    "Warung Botak": "photos/warung-botak.webp",
    "Yay For Today Paya Redan": "photos/yay-for-today-paya-redan.webp"
-};
+
 };
