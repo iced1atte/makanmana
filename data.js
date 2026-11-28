@@ -142,5 +142,16 @@ const PHOTOS = {
    "NoorJannah’s Kitchen": "photos/noorjannahs-kitchen.webp",
    "Nuridah Tomyam": "photos/nuridah-tomyam.webp",
    "Nasi Ayam Berempah Terengganu": "photos/nasi-ayam-berempah-terengganu.webp"
-   
+   "Paumira Dessert": "photos/paumira-dessert.webp",
+   "Restoran Lee Permai Seafood": "photos/restoran-lee-permai-seafood.webp",
+   "Restaurant Sri Tasik Utama": "photos/restaurant-sri-tasik-utama.webp",
+   "Restoran Senda Loka": "photos/restoran-senda-loka.webp",
+   "Sama Sama Cuisine, Muar": "photos/sama-sama-cuisine-muar.webp",
+   "Sama Sama Kopi": "photos/sama-sama-kopi.webp",
+   "Saudagar Cafe Pagoh": "photos/saudagar-cafe-pagoh.jpg",
+   "Suwwitbite.co": "photos/suwwitbite-co.webp",
+   "Warung Tok Lan Janggut, Pekan Pagoh": "photos/warung-tok-lan-janggut-pekan-pagoh.jpg",
+   "Warung Botak": "photos/warung-botak.webp",
+   "Yay For Today Paya Redan": "photos/yay-for-today-paya-redan.webp"
+};
 };
