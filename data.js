@@ -141,7 +141,7 @@ const PHOTOS = {
    "Nasi Beriani, Panchor": "photos/nasi-beriani-panchor.webp",
    "NoorJannah’s Kitchen": "photos/noorjannahs-kitchen.webp",
    "Nuridah Tomyam": "photos/nuridah-tomyam.webp",
-   "Nasi Ayam Berempah Terengganu": "photos/nasi-ayam-berempah-terengganu.webp"
+   "Nasi Ayam Berempah Terengganu": "photos/nasi-ayam-berempah-terengganu.webp",
    "Paumira Dessert": "photos/paumira-dessert.webp",
    "Restoran Lee Permai Seafood": "photos/restoran-lee-permai-seafood.webp",
    "Restaurant Sri Tasik Utama": "photos/restaurant-sri-tasik-utama.webp",
